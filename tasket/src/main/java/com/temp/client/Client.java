@@ -1,7 +1,6 @@
 package com.temp.client;
 
 import com.temp.client.forms.SignInForm;
-import com.temp.server.Server;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.logging.Logger;
 public class Client {
 
     private Socket socket;
-    private final static Logger logger = Logger.getLogger(Server.class.getSimpleName());
+    private final static Logger logger = Logger.getLogger(Client.class.getSimpleName());
 
 
     private void Client() {
@@ -32,7 +31,6 @@ public class Client {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
-
         }
 
         new SignInForm().setVisible(true);

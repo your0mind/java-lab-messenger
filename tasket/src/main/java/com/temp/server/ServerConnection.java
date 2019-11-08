@@ -1,32 +1,54 @@
 package com.temp.server;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerConnection extends Thread {
+public class ServerConnection extends Thread implements Closeable {
 
-    public Server server;
-    public Socket socket;
-    public ObjectInputStream streamIn;
-    public ObjectOutputStream streamOut;
-    private final static Logger logger = Logger.getLogger(Server.class.getSimpleName());
+    private Server server;
+    private Socket socket;
+    private BufferedReader reader;
+    private PrintWriter writer;
+    private final static Logger logger = Logger.getLogger(ServerConnection.class.getSimpleName());
 
     public ServerConnection(Server server, Socket socket) throws IOException {
-        super();
         this.server = server;
         this.socket = socket;
 
-        streamIn = new ObjectInputStream(socket.getInputStream());
-        streamOut = new ObjectOutputStream(socket.getOutputStream());
-        streamOut.flush();
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
     }
 
     @Override
     public void run() {
+        while (!isInterrupted()) {
+            try {
+                String message = reader.readLine();
+            } catch (SocketException e) {
+                logger.log(Level.INFO, "Connection was closed by client");
 
+                try {
+                    server.removeConnection(this);
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, e.getMessage(), e);
+                }
+
+                interrupt();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+
+        logger.log(Level.INFO, "ServerConnection thread finished");
+    }
+
+    @Override
+    public void close() throws IOException {
+        socket.close();
+        reader.close();
+        writer.close();
     }
 }

@@ -16,10 +16,10 @@ public class Server extends Thread {
 
     public Server(int port) {
         this.port = port;
-        connections = new LinkedList<ServerConnection>();
+        connections = new LinkedList<>();
     }
 
-    public void initServerSocket() {
+    private void initServerSocket() {
         try {
             serverSocket = new ServerSocket(port);
             logger.log(Level.INFO, "Server started successfully");
@@ -28,7 +28,7 @@ public class Server extends Thread {
         }
     }
 
-    public void closeServerSocket() {
+    private void closeServerSocket() {
         try {
             serverSocket.close();
             logger.log(Level.INFO, "Server stopped successfully");
@@ -43,9 +43,7 @@ public class Server extends Thread {
 
         while (!isInterrupted()) {
             try {
-                logger.log(Level.INFO, "Trying to add new connection");
                 addConnection(serverSocket.accept());
-                logger.log(Level.INFO, "Added new connection");
             } catch (IOException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -54,21 +52,27 @@ public class Server extends Thread {
         closeServerSocket();
     }
 
-    private void addConnection(Socket socket) throws IOException {
+    public void addConnection(Socket socket) throws IOException {
         ServerConnection connection = new ServerConnection(this, socket);
         connections.add(new ServerConnection(this, socket));
         connection.start();
+
+        logger.log(Level.INFO, "Added new connection");
+    }
+
+    public void removeConnection(ServerConnection serverConnection) throws IOException {
+        serverConnection.close();
+        connections.remove(serverConnection);
+
+        logger.log(Level.INFO, "Connection removed");
+    }
+
+    public void handleRequest() {
+
     }
 
     public static void main(String[] args) {
         Server server = new Server(4004);
         server.start();
-
-//        try {
-//            Thread.sleep(10000);
-//            server.interrupt();
-//        } catch (InterruptedException e) {
-//            logger.log(Level.SEVERE, e.getMessage(), e);
-//        }
     }
 }
