@@ -1,5 +1,8 @@
 package com.temp.server;
 
+import com.google.gson.JsonObject;
+import com.temp.server.requests.Request;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -67,8 +70,8 @@ public class Server extends Thread {
         logger.log(Level.INFO, "Connection removed");
     }
 
-    public void handleRequest() {
-
+    synchronized public void handleRequest(Request request, JsonObject objectRequest) {
+        request.handle(objectRequest);
     }
 
     public static void main(String[] args) {
