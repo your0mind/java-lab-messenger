@@ -1,11 +1,10 @@
 package com.temp.server.requests;
 
-import com.google.gson.JsonObject;
+import com.temp.model.models.User;
 
 public class LoginRequest implements Request {
-
     @Override
-    public void handle(JsonObject objectRequest) {
+    public void handle(User requester, String params) {
 
     }
 }

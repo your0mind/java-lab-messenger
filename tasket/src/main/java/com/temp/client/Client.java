@@ -29,7 +29,8 @@ public class Client {
             logger.log(Level.INFO, "Connection to server successfully created");
 
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 

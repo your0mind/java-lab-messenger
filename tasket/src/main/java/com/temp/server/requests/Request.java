@@ -1,7 +1,7 @@
 package com.temp.server.requests;
 
-import com.google.gson.JsonObject;
+import com.temp.model.models.User;
 
 public interface Request {
-    void handle(JsonObject objectRequest);
+    void handle(User requester, String params);
 }

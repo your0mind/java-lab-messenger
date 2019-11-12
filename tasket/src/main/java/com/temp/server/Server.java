@@ -1,6 +1,6 @@
 package com.temp.server;
 
-import com.google.gson.JsonObject;
+import com.temp.model.models.User;
 import com.temp.server.requests.Request;
 
 import java.io.IOException;
@@ -13,20 +13,21 @@ import java.util.logging.Logger;
 public class Server extends Thread {
 
     private int port;
-    private LinkedList<ServerConnection> connections;
+    private LinkedList<ServerThread> threads;
     private ServerSocket serverSocket;
     private final static Logger logger = Logger.getLogger(Server.class.getSimpleName());
 
     public Server(int port) {
         this.port = port;
-        connections = new LinkedList<>();
+        threads = new LinkedList<>();
     }
 
     private void initServerSocket() {
         try {
             serverSocket = new ServerSocket(port);
             logger.log(Level.INFO, "Server started successfully");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -35,7 +36,8 @@ public class Server extends Thread {
         try {
             serverSocket.close();
             logger.log(Level.INFO, "Server stopped successfully");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -46,8 +48,9 @@ public class Server extends Thread {
 
         while (!isInterrupted()) {
             try {
-                addConnection(serverSocket.accept());
-            } catch (IOException e) {
+                addThread(serverSocket.accept());
+            }
+            catch (IOException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
         }
@@ -55,23 +58,23 @@ public class Server extends Thread {
         closeServerSocket();
     }
 
-    public void addConnection(Socket socket) throws IOException {
-        ServerConnection connection = new ServerConnection(this, socket);
-        connections.add(new ServerConnection(this, socket));
+    public void addThread(Socket socket) throws IOException {
+        ServerThread connection = new ServerThread(this, socket);
+        threads.add(new ServerThread(this, socket));
         connection.start();
 
         logger.log(Level.INFO, "Added new connection");
     }
 
-    public void removeConnection(ServerConnection serverConnection) throws IOException {
-        serverConnection.close();
-        connections.remove(serverConnection);
+    public void removeThread(ServerThread serverThread) throws IOException {
+        serverThread.close();
+        threads.remove(serverThread);
 
         logger.log(Level.INFO, "Connection removed");
     }
 
-    synchronized public void handleRequest(Request request, JsonObject objectRequest) {
-        request.handle(objectRequest);
+    synchronized public void handleRequest(User requester, Request request, String params) {
+        request.handle(requester, params);
     }
 
     public static void main(String[] args) {
