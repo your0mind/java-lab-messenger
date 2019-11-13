@@ -1,6 +1,6 @@
 package com.temp.server.requests;
 
-import com.temp.common.RequestInfo;
+import com.temp.common.requests.RequestInfo;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -21,13 +21,13 @@ public class RequestBuilder {
 
         try {
             request = (Request) requestsMap.get(reqInfo.type).newInstance();
-
-            if (request == null) {
-                throw new InvalidParameterException();
-            }
         }
         catch (InstantiationException | IllegalAccessException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        if (request == null) {
+            throw new InvalidParameterException();
         }
 
         return request;

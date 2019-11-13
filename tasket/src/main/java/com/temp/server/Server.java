@@ -11,10 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server extends Thread {
-
     private int port;
-    private LinkedList<ServerThread> threads;
     private ServerSocket serverSocket;
+    private LinkedList<ServerThread> threads;
     private final static Logger logger = Logger.getLogger(Server.class.getSimpleName());
 
     public Server(int port) {
@@ -49,6 +48,7 @@ public class Server extends Thread {
         while (!isInterrupted()) {
             try {
                 addThread(serverSocket.accept());
+                logger.log(Level.INFO, "Added new ServerThread");
             }
             catch (IOException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
@@ -59,18 +59,14 @@ public class Server extends Thread {
     }
 
     public void addThread(Socket socket) throws IOException {
-        ServerThread connection = new ServerThread(this, socket);
-        threads.add(new ServerThread(this, socket));
-        connection.start();
-
-        logger.log(Level.INFO, "Added new connection");
+        ServerThread serverThread = new ServerThread(this, socket);
+        threads.add(serverThread);
+        serverThread.start();
     }
 
     public void removeThread(ServerThread serverThread) throws IOException {
         serverThread.close();
         threads.remove(serverThread);
-
-        logger.log(Level.INFO, "Connection removed");
     }
 
     synchronized public void handleRequest(User requester, Request request, String params) {

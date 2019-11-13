@@ -1,6 +1,8 @@
 package com.temp.server;
 
-import com.temp.common.Message;
+import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import com.temp.common.MessageToServer;
+import com.temp.model.models.User;
 import com.temp.server.requests.Request;
 import com.temp.server.requests.RequestBuilder;
 
@@ -13,6 +15,7 @@ import java.util.logging.Logger;
 
 public class ServerThread extends Thread implements Closeable {
 
+    private User user;
     private Server server;
     private Socket socket;
     private ObjectInputStream inputStream;
@@ -23,15 +26,22 @@ public class ServerThread extends Thread implements Closeable {
         this.server = server;
         this.socket = socket;
 
-        inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
+        inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
     @Override
     public void run() {
+        try {
+            MessageToServer msg = (MessageToServer) inputStream.readObject();
+        }
+        catch (IOException | ClassNotFoundException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
+
         while (!isInterrupted()) {
             try {
-                Message message = (Message) inputStream.readObject();
+                MessageToServer message = (MessageToServer) inputStream.readObject();
                 Request reqToHandle = RequestBuilder.build(message.requestInfo);
                 server.handleRequest(message.user, reqToHandle, message.requestInfo.params);
                 logger.log(Level.INFO, "Request was handled");
