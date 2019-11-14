@@ -1,5 +1,6 @@
 package com.temp.server.requests;
 
+import com.temp.common.MessageToClient;
 import com.temp.common.requests.LoginRequestParams;
 import com.temp.common.requests.RequestParams;
 import com.temp.model.models.User;
@@ -11,7 +12,7 @@ public class LoginRequest implements Request {
     }
 
     @Override
-    public void handle(User requester, RequestParams params) {
-
+    public MessageToClient createResponse(User requester, RequestParams params) {
+        return null;
     }
 }

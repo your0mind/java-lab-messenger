@@ -1,15 +1,13 @@
 package com.temp.server;
 
-import com.temp.common.MessageToServer;
+import com.temp.common.MessageToClient;
 import com.temp.common.requests.RequestParams;
 import com.temp.model.models.User;
 import com.temp.server.requests.Request;
-import com.temp.server.requests.RequestBuilder;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,12 +15,11 @@ import java.util.logging.Logger;
 public class Server extends Thread {
     private int port;
     private ServerSocket serverSocket;
-    private LinkedList<ServerThread> threads;
+    private LinkedList<ServerThread> threads = new LinkedList<>();;
     private final static Logger logger = Logger.getLogger(Server.class.getSimpleName());
 
     public Server(int port) {
         this.port = port;
-        threads = new LinkedList<>();
     }
 
     private void initServerSocket() {
@@ -73,8 +70,8 @@ public class Server extends Thread {
         threads.remove(serverThread);
     }
 
-    synchronized public void handleRequest(User requester, Request request, RequestParams params) {
-        request.handle(requester, params);
+    synchronized public MessageToClient createResponseMessage(User requester, Request request, RequestParams params) {
+        return request.createResponse(requester, params);
     }
 
     public static void main(String[] args) {

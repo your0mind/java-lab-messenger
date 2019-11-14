@@ -1,8 +1,7 @@
 package com.temp.server.requests;
 
 import com.temp.common.requests.RequestInfo;
-import com.temp.server.exceptions.InvalidRequestParamsException;
-import com.temp.server.exceptions.UnknownRequestException;
+import com.temp.server.exceptions.*;
 
 import java.util.HashMap;
 import java.util.Map;

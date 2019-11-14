@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
-    private static Client instance;
+    private static Client instance = null;
     private User user;
     private Socket socket;
     private ObjectInputStream inputStream;
