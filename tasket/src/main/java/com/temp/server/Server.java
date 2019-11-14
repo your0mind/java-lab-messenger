@@ -1,11 +1,15 @@
 package com.temp.server;
 
+import com.temp.common.MessageToServer;
+import com.temp.common.requests.RequestParams;
 import com.temp.model.models.User;
 import com.temp.server.requests.Request;
+import com.temp.server.requests.RequestBuilder;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,7 +73,7 @@ public class Server extends Thread {
         threads.remove(serverThread);
     }
 
-    synchronized public void handleRequest(User requester, Request request, String params) {
+    synchronized public void handleRequest(User requester, Request request, RequestParams params) {
         request.handle(requester, params);
     }
 

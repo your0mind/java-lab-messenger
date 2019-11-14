@@ -1,12 +1,11 @@
 package com.temp.server.requests;
 
 import com.temp.common.requests.RequestInfo;
+import com.temp.server.exceptions.InvalidRequestParamsException;
+import com.temp.server.exceptions.UnknownRequestException;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class RequestBuilder {
     private static Map<String, Class> requestsMap = new HashMap<String, Class>() {{
@@ -14,20 +13,16 @@ public class RequestBuilder {
         put("getMessages", GetMessagesRequest.class);
     }};
 
-    private final static Logger logger = Logger.getLogger(RequestBuilder.class.getSimpleName());
-
-    public static Request build(RequestInfo reqInfo) throws InvalidParameterException {
-        Request request = null;
-
-        try {
-            request = (Request) requestsMap.get(reqInfo.type).newInstance();
-        }
-        catch (InstantiationException | IllegalAccessException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        }
+    public static Request build(RequestInfo reqInfo) throws UnknownRequestException, InvalidRequestParamsException,
+            IllegalAccessException, InstantiationException {
+        Request request = (Request) requestsMap.get(reqInfo.type).newInstance();
 
         if (request == null) {
-            throw new InvalidParameterException();
+            throw new UnknownRequestException("Unknown request type: " + reqInfo.type);
+        }
+
+        if (request.getParamsClass() != reqInfo.params.getClass()) {
+            throw new InvalidRequestParamsException("Discrepancy between request and parameters");
         }
 
         return request;

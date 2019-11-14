@@ -3,6 +3,7 @@ package com.temp.client;
 import com.temp.client.forms.SignInForm;
 import com.temp.common.MessageToClient;
 import com.temp.common.MessageToServer;
+import com.temp.model.models.User;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -14,12 +15,21 @@ import java.util.logging.Logger;
 
 public class Client {
     private static Client instance;
+    private User user;
     private Socket socket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private final static Logger logger = Logger.getLogger(Client.class.getSimpleName());
 
     private Client() {};
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public static Client getInstance() {
         return (instance == null) ? new Client() : instance;

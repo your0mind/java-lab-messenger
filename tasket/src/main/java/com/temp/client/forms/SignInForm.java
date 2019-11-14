@@ -34,10 +34,11 @@ public class SignInForm extends JFrame {
                     client.connectToServer("localhost", 4004);
                     logger.log(Level.INFO, "Connection to server successfully created");
 
-                    User user = new User(loginField.getText(), passwordField.getText());
-                    RequestParams requestParams = new LoginRequestParams(user, registerCheckBox.isSelected());
+                    client.setUser(new User(loginField.getText(), passwordField.getText()));
+
+                    RequestParams requestParams = new LoginRequestParams(registerCheckBox.isSelected());
                     RequestInfo requestInfo = new RequestInfo("login", requestParams);
-                    MessageToServer msgToServer = new MessageToServer(requestInfo);
+                    MessageToServer msgToServer = new MessageToServer(client.getUser(), requestInfo);
 
                     MessageToClient msg = client.sendMessageToServer(msgToServer);
 

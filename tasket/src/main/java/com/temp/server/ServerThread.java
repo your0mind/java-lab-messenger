@@ -1,8 +1,8 @@
 package com.temp.server;
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import com.temp.common.MessageToServer;
-import com.temp.model.models.User;
+import com.temp.server.exceptions.InvalidRequestParamsException;
+import com.temp.server.exceptions.UnknownRequestException;
 import com.temp.server.requests.Request;
 import com.temp.server.requests.RequestBuilder;
 
@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 
 public class ServerThread extends Thread implements Closeable {
 
-    private User user;
     private Server server;
     private Socket socket;
     private ObjectInputStream inputStream;
@@ -32,38 +31,34 @@ public class ServerThread extends Thread implements Closeable {
 
     @Override
     public void run() {
-        try {
-            MessageToServer msg = (MessageToServer) inputStream.readObject();
-        }
-        catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        }
-
         while (!isInterrupted()) {
             try {
                 MessageToServer message = (MessageToServer) inputStream.readObject();
-                Request reqToHandle = RequestBuilder.build(message.requestInfo);
-                server.handleRequest(message.user, reqToHandle, message.requestInfo.params);
-                logger.log(Level.INFO, "Request was handled");
-            }
-            catch (SocketException e) {
-                interrupt();
-                logger.log(Level.INFO, "ServerThread was closed by user");
+                Request request = RequestBuilder.build(message.requestInfo);
+                server.handleRequest(message.user, request, message.requestInfo.params);
+                logger.log(Level.INFO, "Message was handled");
             }
             catch (ClassNotFoundException e) {
                 //TODO: отправка юзеру сообщения с ошибкой
-                logger.log(Level.SEVERE, "Invalid message from user");
+                logger.log(Level.SEVERE, "Invalid input object type from user");
             }
-            catch (InvalidParameterException e) {
+            catch (UnknownRequestException | InvalidRequestParamsException |
+                    InstantiationException | IllegalAccessException e) {
                 //TODO: отправка юзеру сообщения с ошибкой
-                logger.log(Level.SEVERE, "Invalid request's information from user");
+                logger.log(Level.SEVERE, e.getMessage());
+            }
+            catch (SocketException e) {
+                finish();
+                logger.log(Level.INFO, "ServerThread was closed by user");
             }
             catch (IOException e) {
-                interrupt();
+                finish();
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
         }
+    }
 
+    public void finish() {
         try {
             server.removeThread(this);
             logger.log(Level.INFO, "ServerThread was removed from list");
