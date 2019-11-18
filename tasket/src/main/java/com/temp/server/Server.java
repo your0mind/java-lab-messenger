@@ -26,8 +26,8 @@ public class Server extends Thread {
         try {
             serverSocket = new ServerSocket(port);
             logger.log(Level.INFO, "Server started successfully");
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -36,8 +36,8 @@ public class Server extends Thread {
         try {
             serverSocket.close();
             logger.log(Level.INFO, "Server stopped successfully");
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -50,8 +50,8 @@ public class Server extends Thread {
             try {
                 addThread(serverSocket.accept());
                 logger.log(Level.INFO, "Added new ServerThread");
-            }
-            catch (IOException e) {
+
+            } catch (IOException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
         }

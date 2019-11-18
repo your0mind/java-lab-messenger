@@ -47,24 +47,22 @@ public class ServerThread extends Thread implements Closeable {
 
                 sendMessage(msgToClient);
                 logger.log(Level.INFO, "MessageToServer was handled");
-            }
-            catch (ClassNotFoundException e) {
-                sendMessage(new MessageToClient("", "Unclear message"));
-                logger.log(Level.SEVERE, "Unclear message from user");
-            }
-            catch (UnknownRequestException | InvalidRequestParamsException e) {
-                sendMessage(new MessageToClient("", "Invalid request or parameters"));
-                logger.log(Level.SEVERE, "Invalid request or parameters from user");
-            }
-            catch (InstantiationException | IllegalAccessException e) {
-                sendMessage(new MessageToClient("", "Server error"));
-                logger.log(Level.SEVERE, e.getMessage());
-            }
-            catch (SocketException e) {
+
+            } catch (ClassNotFoundException | UnknownRequestException | InvalidRequestParamsException |
+                    InstantiationException | IllegalAccessException e) {
+                try {
+                    sendMessage(new MessageToClient(null, e.getMessage()));
+                    logger.log(Level.SEVERE, e.getMessage());
+
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, e.getMessage(), e);
+                }
+
+            } catch (SocketException e) {
                 finish();
                 logger.log(Level.INFO, "ServerThread was closed by user");
-            }
-            catch (IOException e) {
+
+            } catch (IOException e) {
                 finish();
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -75,13 +73,8 @@ public class ServerThread extends Thread implements Closeable {
         return (MessageToServer) inputStream.readObject();
     }
 
-    private void sendMessage(MessageToClient message){
-        try {
-            outputStream.writeObject(message);
-        }
-        catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
-        }
+    private void sendMessage(MessageToClient message) throws IOException {
+        outputStream.writeObject(message);
     }
 
     private void finish() {
@@ -90,8 +83,8 @@ public class ServerThread extends Thread implements Closeable {
         try {
             server.removeThread(this);
             logger.log(Level.INFO, "ServerThread was removed from list");
-        }
-        catch (IOException e) {
+
+        } catch (IOException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 

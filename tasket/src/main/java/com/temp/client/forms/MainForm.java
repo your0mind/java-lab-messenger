@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 
 public class MainForm extends JFrame{
     private JTabbedPane tabbedPane1;
@@ -20,6 +21,10 @@ public class MainForm extends JFrame{
     private JTextField messageToConfField;
     private JButton showParticipantsButton;
     private JButton showTasksButton;
+    private JTabbedPane tabbedPane2;
+    private JTextArea textArea1;
+    private JTextField textField1;
+    private JButton sendButton;
 
     public MainForm() {
         showTasksButton.addActionListener(new ActionListener() {
@@ -30,6 +35,7 @@ public class MainForm extends JFrame{
         });
 
         Initialize();
+        });
     }
 
     public void Initialize() {
