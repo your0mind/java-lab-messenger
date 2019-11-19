@@ -1,13 +1,11 @@
 package com.temp.server;
 
-import com.temp.common.MessageToClient;
-import com.temp.common.MessageToServer;
-import com.temp.model.models.User;
-import com.temp.server.exceptions.InvalidRequestParamsException;
+import com.temp.common.requests.Request;
+import com.temp.common.responses.ErrorResponse;
+import com.temp.common.responses.Response;
 import com.temp.server.exceptions.UnknownRequestException;
-import com.temp.server.requests.LoginRequest;
-import com.temp.server.requests.Request;
-import com.temp.server.requests.RequestBuilder;
+import com.temp.server.requests.RequestHandlerBuilder;
+import com.temp.server.requests.handlers.RequestHandler;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ServerThread extends Thread implements Closeable {
-    private User user = null;
     private Server server;
     private Socket socket;
     private ObjectInputStream inputStream;
@@ -35,23 +32,14 @@ public class ServerThread extends Thread implements Closeable {
     public void run() {
         while (!isInterrupted()) {
             try {
-                MessageToServer msg = receiveMessage();
-                Request request = RequestBuilder.build(msg.requestInfo);
-                MessageToClient msgToClient = server.createResponseMessage(msg.user, request, msg.requestInfo.params);
+                Request request = receiveRequest();
+                RequestHandler handler = RequestHandlerBuilder.build(request);
+                sendResponse(server.handleRequest(handler, request));
+                logger.log(Level.INFO, request.getClass().getSimpleName() + " was handled");
 
-                // запоминание юзера в текущем потоке общения
-                if (request instanceof LoginRequest && msgToClient.error.isEmpty()) {
-                    user = msg.user;
-                    user.id = Integer.parseInt(msgToClient.text);
-                }
-
-                sendMessage(msgToClient);
-                logger.log(Level.INFO, "MessageToServer was handled");
-
-            } catch (ClassNotFoundException | UnknownRequestException | InvalidRequestParamsException |
-                    InstantiationException | IllegalAccessException e) {
+            } catch (ClassNotFoundException | UnknownRequestException e) {
                 try {
-                    sendMessage(new MessageToClient(null, e.getMessage()));
+                    sendResponse(new ErrorResponse(e.getMessage()));
                     logger.log(Level.SEVERE, e.getMessage());
 
                 } catch (IOException ex) {
@@ -69,12 +57,12 @@ public class ServerThread extends Thread implements Closeable {
         }
     }
 
-    private MessageToServer receiveMessage() throws IOException, ClassNotFoundException {
-        return (MessageToServer) inputStream.readObject();
+    private Request receiveRequest() throws IOException, ClassNotFoundException {
+        return (Request) inputStream.readObject();
     }
 
-    private void sendMessage(MessageToClient message) throws IOException {
-        outputStream.writeObject(message);
+    private void sendResponse(Response response) throws IOException {
+        outputStream.writeObject(response);
     }
 
     private void finish() {

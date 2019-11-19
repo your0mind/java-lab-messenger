@@ -1,9 +1,10 @@
 package com.temp.server;
 
-import com.temp.common.MessageToClient;
-import com.temp.common.requests.RequestParams;
+import com.temp.common.requests.Request;
+import com.temp.common.requests.params.RequestParams;
+import com.temp.common.responses.Response;
 import com.temp.model.models.User;
-import com.temp.server.requests.Request;
+import com.temp.server.requests.handlers.RequestHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -70,8 +71,8 @@ public class Server extends Thread {
         threads.remove(serverThread);
     }
 
-    synchronized public MessageToClient createResponseMessage(User requester, Request request, RequestParams params) {
-        return request.createResponse(requester, params);
+    synchronized public Response handleRequest(RequestHandler handler, Request request) {
+        return handler.handle(request);
     }
 
     public static void main(String[] args) {

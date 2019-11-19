@@ -22,11 +22,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void save(User user) {
+    public int save(User user) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
-        session.save(user);
+        int id = (int) session.save(user);
         tx1.commit();
         session.close();
+
+        return id;
     }
 }

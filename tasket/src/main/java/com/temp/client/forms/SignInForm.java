@@ -1,11 +1,12 @@
 package com.temp.client.forms;
 
 import com.temp.client.Client;
-import com.temp.common.MessageToClient;
-import com.temp.common.MessageToServer;
-import com.temp.common.requests.LoginRequestParams;
-import com.temp.common.requests.RequestInfo;
-import com.temp.common.requests.RequestParams;
+import com.temp.common.requests.LoginRequest;
+import com.temp.common.requests.RegisterRequest;
+import com.temp.common.requests.params.LoginRequestParams;
+import com.temp.common.responses.ErrorResponse;
+import com.temp.common.responses.LoginResponse;
+import com.temp.common.responses.Response;
 import com.temp.model.models.User;
 
 import javax.swing.*;
@@ -21,31 +22,42 @@ public class SignInForm extends JFrame {
     private JCheckBox registerCheckBox;
     private JButton signInButton;
     private JPanel signInPanel;
-    private Client client;
     private final static Logger logger = Logger.getLogger(SignInForm.class.getSimpleName());
 
     public SignInForm() {
-        client = Client.getInstance();
-
         signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Client client = Client.getInstance();
+
                 try {
                     client.connectToServer("localhost", 4004);
                     logger.log(Level.INFO, "Connection to server successfully created");
 
-                    RequestParams requestParams = new LoginRequestParams(registerCheckBox.isSelected());
-                    RequestInfo requestInfo = new RequestInfo("login", requestParams);
                     User user = new User(loginField.getText(), passwordField.getText());
-                    MessageToServer msgToServer = new MessageToServer(user, requestInfo);
 
-                    MessageToClient msg = client.sendMessageToServer(msgToServer);
+                    if (registerCheckBox.isSelected()) {
+                        Response response = client.sendRequestToServer(new RegisterRequest(user, null));
 
-                    if (msg.error.isEmpty()) {
+                        if (response instanceof ErrorResponse) {
+                            String errorMessage = ((ErrorResponse) response).getErrorMessage();
+                            JOptionPane.showMessageDialog(SignInForm.this, errorMessage);
+                            return;
+                        }
+                    }
+
+                    Response response = client.sendRequestToServer(new LoginRequest(user, null));
+
+                    if (response instanceof LoginResponse) {
+                        user.id = ((LoginResponse) response).getClientId();
+                        client.getData().setUser(user);
                         new MainForm().setVisible(true);
                         dispose();
+                    } else if (response instanceof ErrorResponse){
+                        String errorMessage = ((ErrorResponse) response).getErrorMessage();
+                        JOptionPane.showMessageDialog(SignInForm.this, errorMessage);
                     } else {
-                        JOptionPane.showMessageDialog(SignInForm.this, msg.error);
+                        JOptionPane.showMessageDialog(SignInForm.this, "Something went wrong");
                     }
 
                 } catch (IOException | ClassNotFoundException ex) {

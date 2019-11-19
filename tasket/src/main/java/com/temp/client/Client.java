@@ -1,9 +1,8 @@
 package com.temp.client;
 
 import com.temp.client.forms.SignInForm;
-import com.temp.common.MessageToClient;
-import com.temp.common.MessageToServer;
-import com.temp.model.models.User;
+import com.temp.common.requests.Request;
+import com.temp.common.responses.Response;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -15,6 +14,7 @@ import java.util.logging.Logger;
 
 public class Client {
     private static Client instance = null;
+    private ClientData data = new ClientData();
     private Socket socket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -33,9 +33,9 @@ public class Client {
         inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public MessageToClient sendMessageToServer(MessageToServer message) throws IOException, ClassNotFoundException {
-        outputStream.writeObject(message);
-        return (MessageToClient) inputStream.readObject();
+    public Response sendRequestToServer(Request request) throws IOException, ClassNotFoundException {
+        outputStream.writeObject(request);
+        return (Response) inputStream.readObject();
     }
 
     public static void main(String[] args) {
@@ -47,5 +47,9 @@ public class Client {
         }
 
         new SignInForm().setVisible(true);
+    }
+
+    public ClientData getData() {
+        return data;
     }
 }
