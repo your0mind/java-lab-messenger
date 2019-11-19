@@ -1,9 +1,7 @@
 package com.temp.server;
 
 import com.temp.common.requests.Request;
-import com.temp.common.requests.params.RequestParams;
 import com.temp.common.responses.Response;
-import com.temp.model.models.User;
 import com.temp.server.requests.handlers.RequestHandler;
 
 import java.io.IOException;

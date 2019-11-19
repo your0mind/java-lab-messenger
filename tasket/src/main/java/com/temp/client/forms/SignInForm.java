@@ -3,7 +3,6 @@ package com.temp.client.forms;
 import com.temp.client.Client;
 import com.temp.common.requests.LoginRequest;
 import com.temp.common.requests.RegisterRequest;
-import com.temp.common.requests.params.LoginRequestParams;
 import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.LoginResponse;
 import com.temp.common.responses.Response;

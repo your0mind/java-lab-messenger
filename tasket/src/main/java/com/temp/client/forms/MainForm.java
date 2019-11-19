@@ -35,7 +35,6 @@ public class MainForm extends JFrame{
         });
 
         Initialize();
-        });
     }
 
     public void Initialize() {

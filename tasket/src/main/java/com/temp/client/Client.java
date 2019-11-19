@@ -38,6 +38,10 @@ public class Client {
         return (Response) inputStream.readObject();
     }
 
+    public ClientData getData() {
+        return data;
+    }
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -47,9 +51,5 @@ public class Client {
         }
 
         new SignInForm().setVisible(true);
-    }
-
-    public ClientData getData() {
-        return data;
     }
 }
