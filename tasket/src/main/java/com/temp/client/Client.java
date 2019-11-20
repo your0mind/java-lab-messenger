@@ -23,7 +23,11 @@ public class Client {
     private Client() {};
 
     public static Client getInstance() {
-        return (instance == null) ? new Client() : instance;
+        if (instance == null) {
+            instance = new Client();
+        }
+
+        return instance;
     }
 
     public void connectToServer(String serverHost, int serverPort) throws IOException {

@@ -50,8 +50,8 @@ public class SignInForm extends JFrame {
                     if (response instanceof LoginResponse) {
                         user.id = ((LoginResponse) response).getClientId();
                         client.getData().setUser(user);
+                        setVisible(false);
                         new MainForm().setVisible(true);
-                        dispose();
                     } else if (response instanceof ErrorResponse){
                         String errorMessage = ((ErrorResponse) response).getErrorMessage();
                         JOptionPane.showMessageDialog(SignInForm.this, errorMessage);
