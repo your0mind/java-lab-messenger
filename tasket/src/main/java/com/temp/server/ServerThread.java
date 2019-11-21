@@ -1,7 +1,6 @@
 package com.temp.server;
 
 import com.temp.common.requests.Request;
-import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.Response;
 import com.temp.server.exceptions.UnknownRequestException;
 import com.temp.server.requests.RequestHandlerBuilder;
@@ -30,30 +29,22 @@ public class ServerThread extends Thread implements Closeable {
 
     @Override
     public void run() {
-        while (!isInterrupted()) {
-            try {
+        try {
+            while (!isInterrupted()) {
                 Request request = receiveRequest();
                 RequestHandler handler = RequestHandlerBuilder.build(request);
                 sendResponse(server.handleRequest(handler, request));
                 logger.log(Level.INFO, request.getClass().getSimpleName() + " was handled");
-
-            } catch (ClassNotFoundException | UnknownRequestException e) {
-                try {
-                    sendResponse(new ErrorResponse(e.getMessage()));
-                    logger.log(Level.SEVERE, e.getMessage());
-
-                } catch (IOException ex) {
-                    logger.log(Level.SEVERE, e.getMessage(), e);
-                }
-
-            } catch (SocketException e) {
-                finish();
-                logger.log(Level.INFO, "ServerThread was closed by user");
-
-            } catch (IOException e) {
-                finish();
-                logger.log(Level.SEVERE, e.getMessage(), e);
             }
+
+        } catch (SocketException e) {
+            logger.log(Level.INFO, "ServerThread's connection was closed by user");
+
+        } catch (IOException | ClassNotFoundException | UnknownRequestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+
+        } finally {
+            finish();
         }
     }
 
@@ -65,7 +56,7 @@ public class ServerThread extends Thread implements Closeable {
         outputStream.writeObject(response);
     }
 
-    private void finish() {
+    public void finish() {
         interrupt();
 
         try {

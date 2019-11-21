@@ -5,8 +5,8 @@ import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.LoginResponse;
 import com.temp.common.responses.Response;
 import com.temp.model.models.User;
-import com.temp.model.models.services.UserService;
-import com.temp.model.models.services.UserServiceImpl;
+import com.temp.model.services.UserService;
+import com.temp.model.services.impl.UserServiceImpl;
 
 public class LoginRequestHandler implements RequestHandler<LoginRequest> {
     @Override
@@ -14,14 +14,14 @@ public class LoginRequestHandler implements RequestHandler<LoginRequest> {
         User requester = request.getRequester();
 
         UserService userService = new UserServiceImpl();
-        User user = userService.findUserByUsername(requester.username);
+        User user = userService.findUserByUsername(requester.getUsername());
 
         if (user == null) {
             return new ErrorResponse("Unknown username");
-        } else if (!requester.password.equals(user.password)) {
+        } else if (!requester.getPassword().equals(user.getPassword())) {
             return new ErrorResponse("Invalid password");
         } else {
-            return new LoginResponse(user.id);
+            return new LoginResponse(user.getId());
         }
     }
 }

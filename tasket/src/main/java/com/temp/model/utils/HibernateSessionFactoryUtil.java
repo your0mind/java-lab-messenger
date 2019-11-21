@@ -1,4 +1,4 @@
-package com.temp.model.models.utils;
+package com.temp.model.utils;
 
 import com.temp.model.models.User;
 import org.hibernate.SessionFactory;

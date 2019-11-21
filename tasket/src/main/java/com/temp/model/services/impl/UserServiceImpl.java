@@ -1,11 +1,11 @@
-package com.temp.model.models.services;
+package com.temp.model.services.impl;
 
+import com.temp.model.dao.UserDao;
 import com.temp.model.models.User;
-import com.temp.model.models.dao.UserDao;
-import com.temp.model.models.dao.UserDaoImpl;
+import com.temp.model.dao.impl.UserDaoImpl;
+import com.temp.model.services.UserService;
 
 public class UserServiceImpl implements UserService {
-
     private UserDao usersDao = new UserDaoImpl();
 
     @Override

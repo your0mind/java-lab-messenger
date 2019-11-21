@@ -7,4 +7,8 @@ public class LoginRequest extends Request {
     public LoginRequest(User requester, LoginRequestParams params) {
         super(requester, params);
     }
+
+    public LoginRequest(User requester) {
+        super(requester);
+    }
 }

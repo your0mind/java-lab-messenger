@@ -1,4 +1,4 @@
-package com.temp.model.models.dao;
+package com.temp.model.dao;
 
 import com.temp.model.models.User;
 

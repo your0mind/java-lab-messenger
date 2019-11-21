@@ -5,8 +5,8 @@ import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.RegisterResponse;
 import com.temp.common.responses.Response;
 import com.temp.model.models.User;
-import com.temp.model.models.services.UserService;
-import com.temp.model.models.services.UserServiceImpl;
+import com.temp.model.services.UserService;
+import com.temp.model.services.impl.UserServiceImpl;
 
 public class ReqisterRequestHandler implements RequestHandler<RegisterRequest> {
     @Override
@@ -14,7 +14,7 @@ public class ReqisterRequestHandler implements RequestHandler<RegisterRequest> {
         User requester = request.getRequester();
 
         UserService userService = new UserServiceImpl();
-        User user = userService.findUserByUsername(requester.username);
+        User user = userService.findUserByUsername(requester.getUsername());
 
         if (user != null) {
             return new ErrorResponse("User with this username is already exists");

@@ -1,4 +1,4 @@
-package com.temp.model.models.services;
+package com.temp.model.services;
 
 import com.temp.model.models.User;
 

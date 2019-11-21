@@ -11,6 +11,10 @@ public abstract class Request<T extends RequestParams> implements Serializable {
         this.params = params;
     }
 
+    public Request(User requester) {
+        this.requester = requester;
+    }
+
     public User getRequester() {
         return requester;
     }

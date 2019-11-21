@@ -11,7 +11,6 @@ import com.temp.model.models.User;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,36 +29,33 @@ public class SignInForm extends JFrame {
                 Client client = Client.getInstance();
 
                 try {
-                    client.connectToServer("localhost", 4004);
-                    logger.log(Level.INFO, "Connection to server successfully created");
-
                     User user = new User(loginField.getText(), passwordField.getText());
 
                     if (registerCheckBox.isSelected()) {
-                        Response response = client.sendRequestToServer(new RegisterRequest(user, null));
+                        Response response = client.sendRequestToServer(new RegisterRequest(user));
 
                         if (response instanceof ErrorResponse) {
-                            String errorMessage = ((ErrorResponse) response).getErrorMessage();
-                            JOptionPane.showMessageDialog(SignInForm.this, errorMessage);
-                            return;
+                            throw new Exception(((ErrorResponse) response).getErrorMessage());
                         }
                     }
 
-                    Response response = client.sendRequestToServer(new LoginRequest(user, null));
+                    Response response = client.sendRequestToServer(new LoginRequest(user));
 
                     if (response instanceof LoginResponse) {
-                        user.id = ((LoginResponse) response).getClientId();
-                        client.getData().setUser(user);
+                        user.setId(((LoginResponse) response).getClientId());
+                        client.setUser(user);
+
                         setVisible(false);
                         new MainForm().setVisible(true);
+
                     } else if (response instanceof ErrorResponse){
-                        String errorMessage = ((ErrorResponse) response).getErrorMessage();
-                        JOptionPane.showMessageDialog(SignInForm.this, errorMessage);
+                        throw new Exception(((ErrorResponse) response).getErrorMessage());
+
                     } else {
-                        JOptionPane.showMessageDialog(SignInForm.this, "Something went wrong");
+                        throw new Exception("Something went wrong");
                     }
 
-                } catch (IOException | ClassNotFoundException ex) {
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(SignInForm.this, ex.getMessage());
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }

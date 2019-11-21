@@ -7,4 +7,8 @@ public class RegisterRequest extends Request {
     public RegisterRequest(User requester, RequestParams params) {
         super(requester, params);
     }
+
+    public RegisterRequest(User requester) {
+        super(requester);
+    }
 }
