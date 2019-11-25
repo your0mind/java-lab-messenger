@@ -1,14 +1,9 @@
 package com.temp.common.requests;
 
 import com.temp.common.requests.params.LoginRequestParams;
-import com.temp.model.models.User;
 
-public class LoginRequest extends Request {
-    public LoginRequest(User requester, LoginRequestParams params) {
-        super(requester, params);
-    }
-
-    public LoginRequest(User requester) {
-        super(requester);
+public class LoginRequest extends Request<LoginRequestParams> {
+    public LoginRequest(LoginRequestParams params) {
+        super(params);
     }
 }

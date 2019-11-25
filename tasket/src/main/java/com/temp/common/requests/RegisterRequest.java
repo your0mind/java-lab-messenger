@@ -1,14 +1,9 @@
 package com.temp.common.requests;
 
-import com.temp.common.requests.params.RequestParams;
-import com.temp.model.models.User;
+import com.temp.common.requests.params.RegisterRequestParams;
 
-public class RegisterRequest extends Request {
-    public RegisterRequest(User requester, RequestParams params) {
-        super(requester, params);
-    }
-
-    public RegisterRequest(User requester) {
-        super(requester);
+public class RegisterRequest extends Request<RegisterRequestParams> {
+    public RegisterRequest(RegisterRequestParams params) {
+        super(params);
     }
 }

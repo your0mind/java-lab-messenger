@@ -2,6 +2,7 @@ package com.temp.server;
 
 import com.temp.common.requests.Request;
 import com.temp.common.responses.Response;
+import com.temp.model.models.User;
 import com.temp.server.requests.handlers.RequestHandler;
 
 import java.io.IOException;
@@ -69,8 +70,8 @@ public class Server extends Thread {
         threads.remove(serverThread);
     }
 
-    synchronized public Response handleRequest(RequestHandler handler, Request request) {
-        return handler.handle(request);
+    synchronized public Response handleRequest(RequestHandler handler, Request request, UserSessionInfo userSessionInfo) {
+        return handler.handle(request, userSessionInfo, threads);
     }
 
     public static void main(String[] args) {

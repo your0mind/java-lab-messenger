@@ -1,7 +1,11 @@
 package com.temp.server;
 
+import com.temp.common.requests.LoginRequest;
 import com.temp.common.requests.Request;
+import com.temp.common.requests.params.LoginRequestParams;
+import com.temp.common.responses.LoginResponse;
 import com.temp.common.responses.Response;
+import com.temp.model.models.User;
 import com.temp.server.exceptions.UnknownRequestException;
 import com.temp.server.requests.RequestHandlerBuilder;
 import com.temp.server.requests.handlers.RequestHandler;
@@ -17,6 +21,7 @@ public class ServerThread extends Thread implements Closeable {
     private Socket socket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+    private UserSessionInfo userSessionInfo = new UserSessionInfo();
     private final static Logger logger = Logger.getLogger(ServerThread.class.getSimpleName());
 
     public ServerThread(Server server, Socket socket) throws IOException {
@@ -33,8 +38,16 @@ public class ServerThread extends Thread implements Closeable {
             while (!isInterrupted()) {
                 Request request = receiveRequest();
                 RequestHandler handler = RequestHandlerBuilder.build(request);
-                sendResponse(server.handleRequest(handler, request));
+                Response response = server.handleRequest(userSessionInfo.getUser(), handler, request);
+                sendResponse(response);
                 logger.log(Level.INFO, request.getClass().getSimpleName() + " was handled");
+
+                // Remember user
+                if (response instanceof LoginResponse) {
+                    User user = ((LoginRequestParams) request.getParams()).getUser();
+                    user.setId(((LoginResponse) response).getClientId());
+                    userSessionInfo.setUser(user);
+                }
             }
 
         } catch (SocketException e) {
@@ -75,5 +88,9 @@ public class ServerThread extends Thread implements Closeable {
         socket.close();
         inputStream.close();
         outputStream.close();
+    }
+
+    public UserSessionInfo getUserSessionInfo() {
+        return userSessionInfo;
     }
 }

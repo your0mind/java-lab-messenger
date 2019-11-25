@@ -1,5 +1,6 @@
 package com.temp.client;
 
+import com.temp.client.forms.MainForm;
 import com.temp.client.forms.SignInForm;
 import com.temp.common.requests.Request;
 import com.temp.common.responses.Response;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 
 public class Client {
     private static Client instance = null;
-    private User user;
+    private String username;
     private Socket socket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -49,19 +50,19 @@ public class Client {
         return (Response) inputStream.readObject();
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public static void main(String[] args) {
         Client client = Client.getInstance();
 
         try {
-            client.connectToServer("localhost", 4004);
+//            client.connectToServer("localhost", 4004);
             logger.log(Level.INFO, "Connection to server successfully created");
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         }
@@ -69,6 +70,6 @@ public class Client {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        new SignInForm().setVisible(true);
+        new MainForm().setVisible(true);
     }
 }
