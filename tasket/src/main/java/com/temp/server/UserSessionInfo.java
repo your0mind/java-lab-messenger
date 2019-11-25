@@ -4,10 +4,10 @@ import com.temp.model.models.User;
 
 public class UserSessionInfo {
     private User user = null;
-    private boolean isListenNewDialogs = false;
-    private boolean isListenNewConferences = false;
-    private int listenNewMessagesFromDialogId = -1;
-    private int listenNewMessagesFromConferenceId = -1;
+    private boolean listenDialogsUpdates = false;
+    private boolean listenConferencesUpdates = false;
+    private int listeningDialogId = -1;
+    private int listeningConferenceId = -1;
 
     public User getUser() {
         return user;
@@ -17,35 +17,35 @@ public class UserSessionInfo {
         this.user = user;
     }
 
-    public boolean isListenNewDialogs() {
-        return isListenNewDialogs;
+    public boolean isListenDialogsUpdates() {
+        return listenDialogsUpdates;
     }
 
-    public void setListenNewDialogs(boolean listenNewDialogs) {
-        isListenNewDialogs = listenNewDialogs;
+    public void setListenDialogsUpdates(boolean listenDialogsUpdates) {
+        this.listenDialogsUpdates = listenDialogsUpdates;
     }
 
-    public boolean isListenNewConferences() {
-        return isListenNewConferences;
+    public boolean isListenConferencesUpdates() {
+        return listenConferencesUpdates;
     }
 
-    public void setListenNewConferences(boolean listenNewConferences) {
-        isListenNewConferences = listenNewConferences;
+    public void setListenConferencesUpdates(boolean listenConferencesUpdates) {
+        this.listenConferencesUpdates = listenConferencesUpdates;
     }
 
-    public int getListenNewMessagesFromDialogId() {
-        return listenNewMessagesFromDialogId;
+    public int getListeningDialogId() {
+        return listeningDialogId;
     }
 
-    public void setListenNewMessagesFromDialogId(int listenNewMessagesFromDialogId) {
-        this.listenNewMessagesFromDialogId = listenNewMessagesFromDialogId;
+    public void setListeningDialogId(int listeningDialogId) {
+        this.listeningDialogId = listeningDialogId;
     }
 
-    public int getListenNewMessagesFromConferenceId() {
-        return listenNewMessagesFromConferenceId;
+    public int getListeningConferenceId() {
+        return listeningConferenceId;
     }
 
-    public void setListenNewMessagesFromConferenceId(int listenNewMessagesFromConferenceId) {
-        this.listenNewMessagesFromConferenceId = listenNewMessagesFromConferenceId;
+    public void setListeningConferenceId(int listeningConferenceId) {
+        this.listeningConferenceId = listeningConferenceId;
     }
 }

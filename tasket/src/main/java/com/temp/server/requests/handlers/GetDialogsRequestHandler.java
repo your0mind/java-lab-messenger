@@ -19,12 +19,14 @@ public class GetDialogsRequestHandler implements RequestHandler<GetDialogsReques
     public Response handle(GetDialogsRequest request, UserSessionInfo userSessionInfo, LinkedList<ServerThread> serverThreads) {
         User requester = userSessionInfo.getUser();
 
-        if (requester == null || requester.getId() == 0) {
+        if (requester == null) {
             return new ErrorResponse("Log in first");
         }
 
         DialogService dialogService = new DialogServiceImpl();
-        List<Dialog> dialogs =  dialogService.findAllDialogsByUserId(requester.getId());
+        List<Dialog> dialogs = dialogService.findAllDialogsByUserId(requester.getId());
+
+        userSessionInfo.setListenDialogsUpdates(request.getParams().isListenUpdates());
 
         return new GetDialogsResponse(dialogs);
     }
