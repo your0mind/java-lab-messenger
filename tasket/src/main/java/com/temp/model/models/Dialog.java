@@ -28,6 +28,9 @@ public class Dialog implements Serializable {
         return user2Id;
     }
 
+    public Dialog() {
+    }
+
     public Dialog(int user1Id, int user2Id) {
         this.user1Id = user1Id;
         this.user2Id = user2Id;

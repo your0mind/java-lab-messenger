@@ -2,13 +2,18 @@ package com.temp.server;
 
 import com.temp.common.requests.Request;
 import com.temp.common.responses.Response;
-import com.temp.model.models.User;
+import com.temp.model.models.Dialog;
+import com.temp.model.services.DialogService;
+import com.temp.model.services.UserService;
+import com.temp.model.services.impl.DialogServiceImpl;
+import com.temp.model.services.impl.UserServiceImpl;
 import com.temp.server.requests.handlers.RequestHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,12 +75,15 @@ public class Server extends Thread {
         threads.remove(serverThread);
     }
 
-    synchronized public Response handleRequest(RequestHandler handler, Request request, UserSessionInfo userSessionInfo) {
-        return handler.handle(request, userSessionInfo, threads);
+    synchronized public Response handleRequest(RequestHandler handler, Request request, ServerThread callerThread) {
+        return handler.handle(request, callerThread, threads);
     }
 
     public static void main(String[] args) {
-        Server server = new Server(4004);
-        server.start();
+//        Server server = new Server(4004);
+//        server.start();
+
+        DialogService ds = new DialogServiceImpl();
+        List<Dialog> l = ds.findAllDialogsByUserId(1);
     }
 }

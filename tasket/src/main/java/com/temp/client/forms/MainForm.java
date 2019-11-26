@@ -27,6 +27,11 @@ public class MainForm extends JFrame{
     private JButton sendButton;
 
     public MainForm() {
+        DefaultListModel<Dialog> listModel = new DefaultListModel<>();
+//        listModel.addElement(new Dialog());
+
+        dialogList.setModel(listModel);
+
         showTasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

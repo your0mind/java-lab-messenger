@@ -19,7 +19,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findByUsername(String username) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        User user = (User) session.createQuery("from User where username =:username")
+        User user = (User) session
+                .createQuery("from User where username =:username")
                 .setParameter("username", username)
                 .uniqueResult();
         session.close();

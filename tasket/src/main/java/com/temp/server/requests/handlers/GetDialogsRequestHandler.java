@@ -16,7 +16,8 @@ import java.util.List;
 
 public class GetDialogsRequestHandler implements RequestHandler<GetDialogsRequest> {
     @Override
-    public Response handle(GetDialogsRequest request, UserSessionInfo userSessionInfo, LinkedList<ServerThread> serverThreads) {
+    public Response handle(GetDialogsRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
+        UserSessionInfo userSessionInfo = callerThread.getUserSessionInfo();
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
@@ -26,7 +27,8 @@ public class GetDialogsRequestHandler implements RequestHandler<GetDialogsReques
         DialogService dialogService = new DialogServiceImpl();
         List<Dialog> dialogs = dialogService.findAllDialogsByUserId(requester.getId());
 
-        userSessionInfo.setListenDialogsUpdates(request.getParams().isListenUpdates());
+        boolean listenUpdates = request.getParams().isListenUpdates();
+        userSessionInfo.setListenDialogsUpdates(listenUpdates);
 
         return new GetDialogsResponse(dialogs);
     }

@@ -8,13 +8,12 @@ import com.temp.model.models.User;
 import com.temp.model.services.UserService;
 import com.temp.model.services.impl.UserServiceImpl;
 import com.temp.server.ServerThread;
-import com.temp.server.UserSessionInfo;
 
 import java.util.LinkedList;
 
 public class LoginRequestHandler implements RequestHandler<LoginRequest> {
     @Override
-    public Response handle(LoginRequest request, UserSessionInfo userSessionInfo, LinkedList<ServerThread> serverThreads) {
+    public Response handle(LoginRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
         User requester = request.getParams().getUser();
 
         UserService userService = new UserServiceImpl();

@@ -1,6 +1,7 @@
 package com.temp.client.forms;
 
 import com.temp.client.Client;
+import com.temp.client.ClientThread;
 import com.temp.common.requests.LoginRequest;
 import com.temp.common.requests.RegisterRequest;
 import com.temp.common.requests.params.LoginRequestParams;
@@ -28,14 +29,14 @@ public class SignInForm extends JFrame {
         signInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Client client = Client.getInstance();
+                ClientThread clientThread = Client.getInstance().getClientThread();
 
                 try {
                     User user = new User(loginField.getText(), passwordField.getText());
 
                     if (registerCheckBox.isSelected()) {
                         RegisterRequest request = new RegisterRequest(new RegisterRequestParams(user));
-                        Response response = client.sendRequestToServer(request);
+                        Response response = clientThread.sendRequestToServer(request);
 
                         if (response instanceof ErrorResponse) {
                             throw new Exception(((ErrorResponse) response).getErrorMessage());
@@ -43,10 +44,10 @@ public class SignInForm extends JFrame {
                     }
 
                     LoginRequest request = new LoginRequest(new LoginRequestParams(user));
-                    Response response = client.sendRequestToServer(request);
+                    Response response = clientThread.sendRequestToServer(request);
 
                     if (response instanceof LoginResponse) {
-                        client.setUsername(user.getUsername());
+                        Client.getInstance().setUsername(user.getUsername());
 
                         setVisible(false);
                         new MainForm().setVisible(true);

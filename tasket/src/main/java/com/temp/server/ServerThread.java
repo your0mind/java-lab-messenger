@@ -1,6 +1,5 @@
 package com.temp.server;
 
-import com.temp.common.requests.LoginRequest;
 import com.temp.common.requests.Request;
 import com.temp.common.requests.params.LoginRequestParams;
 import com.temp.common.responses.LoginResponse;
@@ -38,7 +37,7 @@ public class ServerThread extends Thread implements Closeable {
             while (!isInterrupted()) {
                 Request request = receiveRequest();
                 RequestHandler handler = RequestHandlerBuilder.build(request);
-                Response response = server.handleRequest(userSessionInfo.getUser(), handler, request);
+                Response response = server.handleRequest(handler, request, this);
                 sendResponse(response);
                 logger.log(Level.INFO, request.getClass().getSimpleName() + " was handled");
 

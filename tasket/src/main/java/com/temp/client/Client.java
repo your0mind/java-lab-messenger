@@ -15,11 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
-    private static Client instance = null;
     private String username;
-    private Socket socket;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    private static Client instance = null;
+    private ClientThread clientThread = null;
     private final static Logger logger = Logger.getLogger(Client.class.getSimpleName());
 
     private Client() {};
@@ -33,21 +31,15 @@ public class Client {
     }
 
     public void connectToServer(String serverHost, int serverPort) throws IOException {
-        this.socket = new Socket(serverHost, serverPort);
-
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
+        clientThread = new ClientThread(new Socket(serverHost, serverPort));
     }
 
     public void closeConnectionToServer() throws IOException {
-        socket.close();
-        outputStream.close();
-        inputStream.close();
+        clientThread.close();
     }
 
-    public Response sendRequestToServer(Request request) throws IOException, ClassNotFoundException {
-        outputStream.writeObject(request);
-        return (Response) inputStream.readObject();
+    public ClientThread getClientThread() {
+        return clientThread;
     }
 
     public String getUsername() {

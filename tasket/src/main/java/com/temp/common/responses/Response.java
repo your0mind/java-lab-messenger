@@ -1,7 +1,7 @@
 package com.temp.common.responses;
 
-import java.io.Serializable;
+import com.temp.common.Message;
 
-public interface Response extends Serializable {
+public interface Response extends Message {
     String errorMessage = null;
 }
