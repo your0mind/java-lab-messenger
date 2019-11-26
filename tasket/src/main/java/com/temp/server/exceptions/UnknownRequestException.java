@@ -4,4 +4,7 @@ public class UnknownRequestException extends Exception {
     public UnknownRequestException(String message) {
         super(message);
     }
+
+    public UnknownRequestException() {
+    }
 }

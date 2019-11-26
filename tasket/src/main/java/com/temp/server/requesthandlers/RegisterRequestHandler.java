@@ -1,4 +1,4 @@
-package com.temp.server.requests.handlers;
+package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.RegisterRequest;
 import com.temp.common.responses.ErrorResponse;

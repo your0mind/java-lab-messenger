@@ -1,10 +1,14 @@
 package com.temp.client.forms;
 
+import com.temp.client.Client;
+import com.temp.common.requests.GetDialogsRequest;
+import com.temp.common.requests.params.GetDialogsRequestParams;
+import com.temp.model.models.*;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
+import java.io.IOException;
 
 public class MainForm extends JFrame{
     private JTabbedPane tabbedPane1;
@@ -27,10 +31,17 @@ public class MainForm extends JFrame{
     private JButton sendButton;
 
     public MainForm() {
-        DefaultListModel<Dialog> listModel = new DefaultListModel<>();
-//        listModel.addElement(new Dialog());
+        Client client = Client.getInstance();
 
-        dialogList.setModel(listModel);
+        dialogList.setModel(new DefaultListModel<Dialog>());
+
+        try {
+            GetDialogsRequestParams params = new GetDialogsRequestParams(true);
+            client.getClientThread().sendRequestToServer(new GetDialogsRequest(params));
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
 
         showTasksButton.addActionListener(new ActionListener() {
             @Override
@@ -39,10 +50,14 @@ public class MainForm extends JFrame{
             }
         });
 
-        Initialize();
+        InitializeForm();
     }
 
-    public void Initialize() {
+    public DefaultListModel<Dialog> getDialogListModel() {
+        return (DefaultListModel<Dialog>) dialogList.getModel();
+    }
+
+    public void InitializeForm() {
         setTitle("JavaLabMessenger");
         setContentPane(mainFormPanel);
         setLocationRelativeTo(null);

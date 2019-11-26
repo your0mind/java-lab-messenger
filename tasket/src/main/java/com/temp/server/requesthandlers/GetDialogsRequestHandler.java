@@ -1,4 +1,4 @@
-package com.temp.server.requests.handlers;
+package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.GetDialogsRequest;
 import com.temp.common.responses.ErrorResponse;
@@ -26,6 +26,15 @@ public class GetDialogsRequestHandler implements RequestHandler<GetDialogsReques
 
         DialogService dialogService = new DialogServiceImpl();
         List<Dialog> dialogs = dialogService.findAllDialogsByUserId(requester.getId());
+
+        // Set requester as user1 in dialog
+        for (Dialog dialog: dialogs) {
+            if (!dialog.getUser1().getUsername().equals(requester.getUsername())) {
+                User temp = dialog.getUser1();
+                dialog.setUser1(dialog.getUser2());
+                dialog.setUser2(temp);
+            }
+        }
 
         boolean listenUpdates = request.getParams().isListenUpdates();
         userSessionInfo.setListenDialogsUpdates(listenUpdates);

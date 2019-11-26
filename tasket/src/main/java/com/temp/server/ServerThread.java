@@ -6,8 +6,8 @@ import com.temp.common.responses.LoginResponse;
 import com.temp.common.responses.Response;
 import com.temp.model.models.User;
 import com.temp.server.exceptions.UnknownRequestException;
-import com.temp.server.requests.RequestHandlerBuilder;
-import com.temp.server.requests.handlers.RequestHandler;
+import com.temp.server.requesthandlers.RequestHandlerBuilder;
+import com.temp.server.requesthandlers.RequestHandler;
 
 import java.io.*;
 import java.net.Socket;
@@ -43,9 +43,7 @@ public class ServerThread extends Thread implements Closeable {
 
                 // Remember user
                 if (response instanceof LoginResponse) {
-                    User user = ((LoginRequestParams) request.getParams()).getUser();
-                    user.setId(((LoginResponse) response).getClientId());
-                    userSessionInfo.setUser(user);
+                    userSessionInfo.setUser(((LoginResponse) response).getClient());
                 }
             }
 

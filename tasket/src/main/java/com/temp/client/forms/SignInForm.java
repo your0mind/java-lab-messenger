@@ -6,14 +6,12 @@ import com.temp.common.requests.LoginRequest;
 import com.temp.common.requests.RegisterRequest;
 import com.temp.common.requests.params.LoginRequestParams;
 import com.temp.common.requests.params.RegisterRequestParams;
-import com.temp.common.responses.ErrorResponse;
-import com.temp.common.responses.LoginResponse;
-import com.temp.common.responses.Response;
 import com.temp.model.models.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,30 +34,15 @@ public class SignInForm extends JFrame {
 
                     if (registerCheckBox.isSelected()) {
                         RegisterRequest request = new RegisterRequest(new RegisterRequestParams(user));
-                        Response response = clientThread.sendRequestToServer(request);
-
-                        if (response instanceof ErrorResponse) {
-                            throw new Exception(((ErrorResponse) response).getErrorMessage());
-                        }
+                        clientThread.sendRequestToServer(request);
                     }
 
                     LoginRequest request = new LoginRequest(new LoginRequestParams(user));
-                    Response response = clientThread.sendRequestToServer(request);
+                    clientThread.sendRequestToServer(request);
 
-                    if (response instanceof LoginResponse) {
-                        Client.getInstance().setUsername(user.getUsername());
+                    SignInForm.this.setEnabled(false);
 
-                        setVisible(false);
-                        new MainForm().setVisible(true);
-
-                    } else if (response instanceof ErrorResponse){
-                        throw new Exception(((ErrorResponse) response).getErrorMessage());
-
-                    } else {
-                        throw new Exception("Something went wrong");
-                    }
-
-                } catch (Exception ex) {
+                } catch (IOException ex) {
                     JOptionPane.showMessageDialog(SignInForm.this, ex.getMessage());
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }

@@ -1,24 +1,24 @@
 package com.temp.client;
 
+import com.temp.client.messagehandlers.MessageHandler;
+import com.temp.client.messagehandlers.MessageHandlerBuilder;
 import com.temp.common.Message;
 import com.temp.common.requests.Request;
-import com.temp.common.responses.Response;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ClientThread extends Thread implements Closeable {
+    private Client client;
     private Socket socket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    private final static Logger logger = Logger.getLogger(ClientThread.class.getSimpleName());
 
-    public ClientThread(Socket socket) throws IOException {
+    public ClientThread(Client client, Socket socket) throws IOException {
+        this.client = client;
         this.socket = socket;
 
         outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -30,27 +30,20 @@ public class ClientThread extends Thread implements Closeable {
         try {
             while (!isInterrupted()) {
                 Message msg = receiveMessageFromServer();
+                MessageHandler handler = MessageHandlerBuilder.build(msg);
+                client.handleMessage(handler, msg);
             }
 
-        } catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+        } catch (Exception e) {
         }
     }
 
-    public void connectToServer(String serverHost, int serverPort) throws IOException {
-        this.socket = new Socket(serverHost, serverPort);
-
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
-    }
-
-    public Message receiveMessageFromServer() throws IOException, ClassNotFoundException {
+    private Message receiveMessageFromServer() throws IOException, ClassNotFoundException {
         return (Message) inputStream.readObject();
     }
 
-    public Response sendRequestToServer(Request request) throws IOException, ClassNotFoundException {
+    public synchronized void sendRequestToServer(Request request) throws IOException {
         outputStream.writeObject(request);
-        return (Response) inputStream.readObject();
     }
 
     @Override

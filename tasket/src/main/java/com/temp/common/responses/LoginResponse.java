@@ -1,13 +1,15 @@
 package com.temp.common.responses;
 
+import com.temp.model.models.User;
+
 public class LoginResponse implements Response {
-    public int getClientId() {
-        return clientId;
+    private User client;
+
+    public LoginResponse(User client) {
+        this.client = client;
     }
 
-    private int clientId;
-
-    public LoginResponse(int clientId) {
-        this.clientId = clientId;
+    public User getClient() {
+        return client;
     }
 }

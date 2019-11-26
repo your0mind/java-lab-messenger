@@ -1,4 +1,4 @@
-package com.temp.server.requests.handlers;
+package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.LoginRequest;
 import com.temp.common.responses.ErrorResponse;
@@ -24,7 +24,7 @@ public class LoginRequestHandler implements RequestHandler<LoginRequest> {
         } else if (!requester.getPassword().equals(user.getPassword())) {
             return new ErrorResponse("Invalid password");
         } else {
-            return new LoginResponse(user.getId());
+            return new LoginResponse(user);
         }
     }
 }

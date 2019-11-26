@@ -10,29 +10,40 @@ public class Dialog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user1_id")
-    private int user1Id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user1_id")
+    private User user1;
 
-    @Column(name = "user2_id")
-    private int user2Id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user2_id")
+    private User user2;
 
-    public int getId() {
-        return id;
+    public User getUser1() {
+        return user1;
     }
 
-    public int getUser1Id() {
-        return user1Id;
+    public User getUser2() {
+        return user2;
     }
 
-    public int getUser2Id() {
-        return user2Id;
+    public void setUser1(User user1) {
+        this.user1 = user1;
+    }
+
+    public void setUser2(User user2) {
+        this.user2 = user2;
+    }
+
+    @Override
+    public String toString() {
+        return user2.getUsername();
     }
 
     public Dialog() {
     }
 
-    public Dialog(int user1Id, int user2Id) {
-        this.user1Id = user1Id;
-        this.user2Id = user2Id;
+    public Dialog(User user1, User user2) {
+        this.user1 = user1;
+        this.user2 = user2;
     }
 }
