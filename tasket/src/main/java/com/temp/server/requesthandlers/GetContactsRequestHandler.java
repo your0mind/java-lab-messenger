@@ -1,7 +1,6 @@
 package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.GetContactsRequest;
-import com.temp.common.requests.GetDialogContactsRequest;
 import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.GetContactsResponse;
 import com.temp.common.responses.Response;
@@ -10,7 +9,6 @@ import com.temp.model.services.UserService;
 import com.temp.model.services.impl.UserServiceImpl;
 import com.temp.server.ServerThread;
 import com.temp.server.UserSessionInfo;
-import org.graalvm.compiler.lir.LIRInstruction;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

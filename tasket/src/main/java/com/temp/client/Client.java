@@ -1,5 +1,6 @@
 package com.temp.client;
 
+import com.temp.client.forms.CreateDialogForm;
 import com.temp.client.forms.MainForm;
 import com.temp.client.forms.SignInForm;
 import com.temp.client.messagehandlers.MessageHandler;
@@ -14,6 +15,15 @@ import java.util.logging.Logger;
 public class Client {
     private SignInForm signInForm;
     private MainForm mainForm;
+    private CreateDialogForm createDialogForm;
+
+    public CreateDialogForm getCreateDialogForm() {
+        return createDialogForm;
+    }
+
+    public void setCreateDialogForm(CreateDialogForm createDialogForm) {
+        this.createDialogForm = createDialogForm;
+    }
 
     private String username;
     private static Client instance = null;
@@ -23,9 +33,6 @@ public class Client {
     private Client() {
         signInForm = new SignInForm();
         signInForm.setVisible(true);
-
-//        mainForm = new MainForm();
-//        mainForm.setVisible(true);
     }
 
     public static Client getInstance() {

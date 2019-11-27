@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MainForm extends JFrame{
+public class MainForm extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel mainFormPanel;
     private JButton createDialogButton;
@@ -31,7 +31,7 @@ public class MainForm extends JFrame{
     private JButton sendButton;
 
     public MainForm() {
-        Client client = Client.getInstance();
+        final Client client = Client.getInstance();
 
         dialogContactsList.setModel(new DefaultListModel<String>());
 
@@ -43,10 +43,11 @@ public class MainForm extends JFrame{
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
 
-        showTasksButton.addActionListener(new ActionListener() {
+        createDialogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TaskListForm(MainForm.this).setVisible(true);
+                client.setCreateDialogForm(new CreateDialogForm(MainForm.this));
+                client.getCreateDialogForm().setVisible(true);
             }
         });
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.temp.client.forms.CreateDialogForm">
+  <grid id="27dc6" binding="mainFormPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="199" height="400"/>
+    </constraints>
+    <properties>
+      <maximumSize width="180" height="400"/>
+      <minimumSize width="180" height="400"/>
+      <preferredSize width="180" height="400"/>
+    </properties>
+    <border type="empty">
+      <size top="2" left="2" bottom="2" right="2"/>
+    </border>
+    <children>
+      <component id="b3b24" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Contacts:"/>
+        </properties>
+      </component>
+      <component id="33747" class="javax.swing.JList" binding="contactsList">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-986896"/>
+          <model>
+            <item value="dialog1"/>
+            <item value="dialog2"/>
+            <item value="dialog3"/>
+            <item value="dialog4"/>
+          </model>
+        </properties>
+      </component>
+      <component id="bdf0e" class="javax.swing.JButton" binding="createDialogButton" default-binding="true">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-8213827"/>
+          <text value="Create dialog"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
