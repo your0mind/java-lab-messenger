@@ -1,8 +1,8 @@
 package com.temp.client.forms;
 
 import com.temp.client.Client;
-import com.temp.common.requests.GetDialogsRequest;
-import com.temp.common.requests.params.GetDialogsRequestParams;
+import com.temp.common.requests.GetDialogContactsRequest;
+import com.temp.common.requests.params.GetDialogContactsRequestParams;
 import com.temp.model.models.*;
 
 import javax.swing.*;
@@ -36,8 +36,8 @@ public class MainForm extends JFrame{
         dialogList.setModel(new DefaultListModel<Dialog>());
 
         try {
-            GetDialogsRequestParams params = new GetDialogsRequestParams(true);
-            client.getClientThread().sendRequestToServer(new GetDialogsRequest(params));
+            GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
+            client.getClientThread().sendRequestToServer(new GetDialogContactsRequest(params));
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());

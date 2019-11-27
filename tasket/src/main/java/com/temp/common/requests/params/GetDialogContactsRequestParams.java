@@ -1,9 +1,9 @@
 package com.temp.common.requests.params;
 
-public class GetDialogsRequestParams implements RequestParams {
+public class GetDialogContactsRequestParams implements RequestParams {
     private boolean listenUpdates;
 
-    public GetDialogsRequestParams(boolean listenUpdates) {
+    public GetDialogContactsRequestParams(boolean listenUpdates) {
         this.listenUpdates = listenUpdates;
     }
 

@@ -2,12 +2,16 @@ package com.temp.server;
 
 import com.temp.common.requests.Request;
 import com.temp.common.responses.Response;
+import com.temp.model.models.Dialog;
+import com.temp.model.services.DialogService;
+import com.temp.model.services.impl.DialogServiceImpl;
 import com.temp.server.requesthandlers.RequestHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,7 +78,12 @@ public class Server extends Thread {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(4004);
-        server.start();
+//        Server server = new Server(4004);
+//        server.start();
+
+        DialogService ds = new DialogServiceImpl();
+        List<Dialog> l = ds.findAllDialogsByUserId(1);
+
+        System.out.println();
     }
 }
