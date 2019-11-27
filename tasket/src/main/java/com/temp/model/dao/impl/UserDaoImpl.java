@@ -7,6 +7,8 @@ import com.temp.model.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class UserDaoImpl implements UserDao {
     @Override
     public User findById(int id) {
@@ -25,6 +27,17 @@ public class UserDaoImpl implements UserDao {
                 .uniqueResult();
         session.close();
         return user;
+    }
+
+    @Override
+    public List<User> getAll() {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        @SuppressWarnings("unchecked")
+        List<User> users = (List<User>) session
+                .createQuery("from User")
+                .list();
+        session.close();
+        return users;
     }
 
     @Override

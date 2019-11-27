@@ -5,6 +5,8 @@ import com.temp.model.models.User;
 import com.temp.model.dao.impl.UserDaoImpl;
 import com.temp.model.services.UserService;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
     private UserDao usersDao = new UserDaoImpl();
 
@@ -16,6 +18,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         return usersDao.findByUsername(username);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return usersDao.getAll();
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.temp.client.forms;
 import com.temp.client.Client;
 import com.temp.common.requests.GetDialogContactsRequest;
 import com.temp.common.requests.params.GetDialogContactsRequestParams;
-import com.temp.model.models.*;
+import com.temp.model.models.Dialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ public class MainForm extends JFrame{
     private JTabbedPane tabbedPane1;
     private JPanel mainFormPanel;
     private JButton createDialogButton;
-    private JList dialogList;
+    private JList dialogContactsList;
     private JTextArea dialogMessagesArea;
     private JTextField messageToDialogField;
     private JButton sendToDialogButton;
@@ -33,7 +33,7 @@ public class MainForm extends JFrame{
     public MainForm() {
         Client client = Client.getInstance();
 
-        dialogList.setModel(new DefaultListModel<Dialog>());
+        dialogContactsList.setModel(new DefaultListModel<String>());
 
         try {
             GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
@@ -53,8 +53,8 @@ public class MainForm extends JFrame{
         InitializeForm();
     }
 
-    public DefaultListModel<Dialog> getDialogListModel() {
-        return (DefaultListModel<Dialog>) dialogList.getModel();
+    public DefaultListModel<String> getDialogContactsListModel() {
+        return (DefaultListModel<String>) dialogContactsList.getModel();
     }
 
     public void InitializeForm() {

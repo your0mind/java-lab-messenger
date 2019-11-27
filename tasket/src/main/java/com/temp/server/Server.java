@@ -78,12 +78,7 @@ public class Server extends Thread {
     }
 
     public static void main(String[] args) {
-//        Server server = new Server(4004);
-//        server.start();
-
-        DialogService ds = new DialogServiceImpl();
-        List<Dialog> l = ds.findAllDialogsByUserId(1);
-
-        System.out.println();
+        Server server = new Server(4004);
+        server.start();
     }
 }
