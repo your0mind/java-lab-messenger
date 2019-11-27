@@ -44,7 +44,7 @@ public class GetDialogContactsRequestHandler implements RequestHandler<GetDialog
         }
 
         boolean listenUpdates = request.getParams().isListenUpdates();
-        userSessionInfo.setListenDialogsUpdates(listenUpdates);
+        userSessionInfo.setListenDialogContactUpdates(listenUpdates);
 
         return new GetDialogContactsResponse(contacts);
     }

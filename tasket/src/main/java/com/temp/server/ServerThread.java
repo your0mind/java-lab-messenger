@@ -1,10 +1,9 @@
 package com.temp.server;
 
+import com.temp.common.Message;
 import com.temp.common.requests.Request;
-import com.temp.common.requests.params.LoginRequestParams;
-import com.temp.common.responses.LoginResponse;
+import com.temp.common.responses.SignInResponse;
 import com.temp.common.responses.Response;
-import com.temp.model.models.User;
 import com.temp.server.exceptions.UnknownRequestException;
 import com.temp.server.requesthandlers.RequestHandlerBuilder;
 import com.temp.server.requesthandlers.RequestHandler;
@@ -38,13 +37,8 @@ public class ServerThread extends Thread implements Closeable {
                 Request request = receiveRequest();
                 RequestHandler handler = RequestHandlerBuilder.build(request);
                 Response response = server.handleRequest(handler, request, this);
-                sendResponse(response);
+                sendMessage(response);
                 logger.log(Level.INFO, request.getClass().getSimpleName() + " was handled");
-
-                // Remember user
-                if (response instanceof LoginResponse) {
-                    userSessionInfo.setUser(((LoginResponse) response).getClient());
-                }
             }
 
         } catch (SocketException e) {
@@ -62,8 +56,8 @@ public class ServerThread extends Thread implements Closeable {
         return (Request) inputStream.readObject();
     }
 
-    private void sendResponse(Response response) throws IOException {
-        outputStream.writeObject(response);
+    public synchronized void sendMessage(Message message) throws IOException {
+        outputStream.writeObject(message);
     }
 
     public void finish() {

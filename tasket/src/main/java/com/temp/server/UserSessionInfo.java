@@ -4,7 +4,7 @@ import com.temp.model.models.User;
 
 public class UserSessionInfo {
     private User user = null;
-    private boolean listenDialogsUpdates = false;
+    private boolean listenDialogContactUpdates = false;
     private boolean listenConferencesUpdates = false;
     private int listeningDialogId = -1;
     private int listeningConferenceId = -1;
@@ -17,12 +17,12 @@ public class UserSessionInfo {
         this.user = user;
     }
 
-    public boolean isListenDialogsUpdates() {
-        return listenDialogsUpdates;
+    public boolean isListenDialogContactUpdates() {
+        return listenDialogContactUpdates;
     }
 
-    public void setListenDialogsUpdates(boolean listenDialogsUpdates) {
-        this.listenDialogsUpdates = listenDialogsUpdates;
+    public void setListenDialogContactUpdates(boolean listenDialogContactUpdates) {
+        this.listenDialogContactUpdates = listenDialogContactUpdates;
     }
 
     public boolean isListenConferencesUpdates() {

@@ -1,7 +1,5 @@
 package com.temp.client;
 
-import com.temp.client.forms.CreateDialogForm;
-import com.temp.client.forms.MainForm;
 import com.temp.client.forms.SignInForm;
 import com.temp.client.messagehandlers.MessageHandler;
 import com.temp.common.Message;
@@ -13,34 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
-    private SignInForm signInForm;
-    private MainForm mainForm;
-    private CreateDialogForm createDialogForm;
-
-    public CreateDialogForm getCreateDialogForm() {
-        return createDialogForm;
-    }
-
-    public void setCreateDialogForm(CreateDialogForm createDialogForm) {
-        this.createDialogForm = createDialogForm;
-    }
-
     private String username;
-    private static Client instance = null;
     private ClientThread clientThread = null;
+    private ClientDefaultListModels defaultListModels = new ClientDefaultListModels();
     private final static Logger logger = Logger.getLogger(Client.class.getSimpleName());
-
-    private Client() {
-        signInForm = new SignInForm();
-        signInForm.setVisible(true);
-    }
-
-    public static Client getInstance() {
-        if (instance == null) {
-            instance = new Client();
-        }
-        return instance;
-    }
 
     public void connectToServer(String serverHost, int serverPort) throws IOException {
         clientThread = new ClientThread(this, new Socket(serverHost, serverPort));
@@ -51,8 +25,8 @@ public class Client {
         clientThread.close();
     }
 
-    public void handleMessage(MessageHandler handler, Message message) {
-        handler.handle(message);
+    public <T extends Message> void handleMessage(MessageHandler<T> handler, T message) {
+        handler.handle(message, this);
     }
 
     public ClientThread getClientThread() {
@@ -67,25 +41,12 @@ public class Client {
         this.username = username;
     }
 
-
-    public SignInForm getSignInForm() {
-        return signInForm;
-    }
-
-    public void setSignInForm(SignInForm signInForm) {
-        this.signInForm = signInForm;
-    }
-
-    public MainForm getMainForm() {
-        return mainForm;
-    }
-
-    public void setMainForm(MainForm mainForm) {
-        this.mainForm = mainForm;
+    public ClientDefaultListModels getDefaultListModels() {
+        return defaultListModels;
     }
 
     public static void main(String[] args) {
-        Client client = Client.getInstance();
+        Client client = new Client();
 
         try {
             client.connectToServer("localhost", 4004);
@@ -95,5 +56,7 @@ public class Client {
         catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
+
+        SignInForm.getInstance(client).setVisible(true);
     }
 }

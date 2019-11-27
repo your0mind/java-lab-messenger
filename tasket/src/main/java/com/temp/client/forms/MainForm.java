@@ -1,9 +1,9 @@
 package com.temp.client.forms;
 
 import com.temp.client.Client;
+import com.temp.client.ClientDefaultListModels;
 import com.temp.common.requests.GetDialogContactsRequest;
 import com.temp.common.requests.params.GetDialogContactsRequestParams;
-import com.temp.model.models.Dialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,10 +11,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MainForm extends JFrame {
+    private static MainForm instance = null;
     private JTabbedPane tabbedPane1;
     private JPanel mainFormPanel;
     private JButton createDialogButton;
-    private JList dialogContactsList;
+    private JList<String> dialogContactsList;
     private JTextArea dialogMessagesArea;
     private JTextField messageToDialogField;
     private JButton sendToDialogButton;
@@ -30,10 +31,10 @@ public class MainForm extends JFrame {
     private JTextField textField1;
     private JButton sendButton;
 
-    public MainForm() {
-        final Client client = Client.getInstance();
+    private MainForm(final Client client) {
+        ClientDefaultListModels dlm = client.getDefaultListModels();
 
-        dialogContactsList.setModel(new DefaultListModel<String>());
+        dialogContactsList.setModel(dlm.getDialogContactsListModel());
 
         try {
             GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
@@ -46,23 +47,30 @@ public class MainForm extends JFrame {
         createDialogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.setCreateDialogForm(new CreateDialogForm(MainForm.this));
-                client.getCreateDialogForm().setVisible(true);
+                CreateDialogForm createDialogForm = new CreateDialogForm(client, MainForm.this);
+                createDialogForm.setVisible(true);
             }
         });
 
-        InitializeForm();
+        initUI();
+    }
+
+    public static MainForm getInstance(Client client) {
+        if (instance == null) {
+            instance = new MainForm(client);
+        }
+        return instance;
     }
 
     public DefaultListModel<String> getDialogContactsListModel() {
         return (DefaultListModel<String>) dialogContactsList.getModel();
     }
 
-    public void InitializeForm() {
+    private void initUI() {
         setTitle("JavaLabMessenger");
         setContentPane(mainFormPanel);
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
+        setLocationRelativeTo(null);
     }
 }

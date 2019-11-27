@@ -73,7 +73,7 @@ public class Server extends Thread {
         threads.remove(serverThread);
     }
 
-    synchronized public Response handleRequest(RequestHandler handler, Request request, ServerThread callerThread) {
+    synchronized public <T extends Request> Response handleRequest(RequestHandler<T> handler, T request, ServerThread callerThread) {
         return handler.handle(request, callerThread, threads);
     }
 

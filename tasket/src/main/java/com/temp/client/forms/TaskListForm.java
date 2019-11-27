@@ -10,14 +10,14 @@ public class TaskListForm extends JDialog {
     private JPanel taskListPanel;
 
     public TaskListForm(JFrame owner) {
-        super(owner);
-        Initialize();
+        super(owner, true);
+
+        InitUI();
     }
 
-    public void Initialize() {
+    public void InitUI() {
         setTitle("Task list");
         setContentPane(taskListPanel);
-        setModal(true);
         pack();
     }
 }

@@ -2,11 +2,10 @@ package com.temp.client.forms;
 
 import com.temp.client.Client;
 import com.temp.client.ClientThread;
-import com.temp.common.requests.LoginRequest;
-import com.temp.common.requests.RegisterRequest;
-import com.temp.common.requests.params.LoginRequestParams;
-import com.temp.common.requests.params.RegisterRequestParams;
-import com.temp.model.models.User;
+import com.temp.common.requests.SignInRequest;
+import com.temp.common.requests.SignUpRequest;
+import com.temp.common.requests.params.SignInRequestParams;
+import com.temp.common.requests.params.SignUpRequestParams;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,30 +15,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SignInForm extends JFrame {
-    private JTextField loginField;
+    private static SignInForm instance = null;
+    private JTextField usernameField;
     private JTextField passwordField;
-    private JCheckBox registerCheckBox;
     private JButton signInButton;
     private JPanel signInPanel;
+    private JButton signUpButton;
     private final static Logger logger = Logger.getLogger(SignInForm.class.getSimpleName());
 
-    public SignInForm() {
-        signInButton.addActionListener(new ActionListener() {
+    private SignInForm(final Client client) {
+        signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ClientThread clientThread = Client.getInstance().getClientThread();
+                ClientThread clientThread = client.getClientThread();
+
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+
+                SignUpRequestParams params = new SignUpRequestParams(username, password);
+                SignUpRequest request = new SignUpRequest(params);
 
                 try {
-                    User user = new User(loginField.getText(), passwordField.getText());
-
-                    if (registerCheckBox.isSelected()) {
-                        RegisterRequest request = new RegisterRequest(new RegisterRequestParams(user));
-                        clientThread.sendRequestToServer(request);
-                    }
-
-                    LoginRequest request = new LoginRequest(new LoginRequestParams(user));
                     clientThread.sendRequestToServer(request);
-
                     SignInForm.this.setEnabled(false);
 
                 } catch (IOException ex) {
@@ -49,10 +46,40 @@ public class SignInForm extends JFrame {
             }
         });
 
-        Initialize();
+        signInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClientThread clientThread = client.getClientThread();
+
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+
+                SignInRequestParams params = new SignInRequestParams(username, password);
+                SignInRequest request = new SignInRequest(params);
+
+                try {
+                    clientThread.sendRequestToServer(request);
+                    client.setUsername(username);
+                    SignInForm.this.setEnabled(false);
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(SignInForm.this, ex.getMessage());
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        });
+
+        initUI();
     }
 
-    public void Initialize() {
+    public static SignInForm getInstance(Client client) {
+        if (instance == null) {
+            instance = new SignInForm(client);
+        }
+        return instance;
+    }
+
+    public void initUI() {
         setTitle("Sign In");
         setContentPane(signInPanel);
         setResizable(false);

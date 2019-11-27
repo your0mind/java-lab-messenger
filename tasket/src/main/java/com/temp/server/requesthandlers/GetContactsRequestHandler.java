@@ -29,7 +29,9 @@ public class GetContactsRequestHandler implements RequestHandler<GetContactsRequ
 
         List<String> contacts = new ArrayList<>();
         for (User user: users) {
-            contacts.add(user.getUsername());
+            if (user.getId() != requester.getId()) {
+                contacts.add(user.getUsername());
+            }
         }
 
         return new GetContactsResponse(contacts);
