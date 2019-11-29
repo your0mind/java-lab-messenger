@@ -2,7 +2,6 @@ package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.SignUpRequest;
 import com.temp.common.requests.params.SignUpRequestParams;
-import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.Response;
 import com.temp.common.responses.SignUpResponse;
 import com.temp.model.models.User;
@@ -18,10 +17,10 @@ public class SignUpRequestHandler implements RequestHandler<SignUpRequest> {
         SignUpRequestParams params = request.getParams();
 
         UserService userService = new UserServiceImpl();
-        User user = userService.findUserByUsername(params.getUsername());
+        User user = userService.findUser(params.getUsername());
 
         if (user != null) {
-            return new ErrorResponse("User with this username is already exists");
+            return new SignUpResponse("User with this username is already exists");
         } else {
             userService.saveUser(new User(params.getUsername(), params.getPassword()));
             return new SignUpResponse();

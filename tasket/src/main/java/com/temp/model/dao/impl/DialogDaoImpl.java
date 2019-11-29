@@ -2,6 +2,7 @@ package com.temp.model.dao.impl;
 
 import com.temp.model.dao.DialogDao;
 import com.temp.model.models.Dialog;
+import com.temp.model.models.User;
 import com.temp.model.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -10,12 +11,12 @@ import java.util.List;
 
 public class DialogDaoImpl implements DialogDao {
     @Override
-    public List<Dialog> findAllByUserId(int userId) {
+    public List<Dialog> findAllByUser(User user) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         @SuppressWarnings("unchecked")
         List<Dialog> dialogs = (List<Dialog>) session
                 .createQuery("from Dialog where user1_id =:userId or user2_id =:userId")
-                .setParameter("userId", userId)
+                .setParameter("userId", user.getId())
                 .list();
         session.close();
         return dialogs;

@@ -1,9 +1,9 @@
 package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.GetDialogContactsRequest;
-import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.GetDialogContactsResponse;
 import com.temp.common.responses.Response;
+import com.temp.model.models.Contact;
 import com.temp.model.models.Dialog;
 import com.temp.model.models.User;
 import com.temp.model.services.DialogService;
@@ -24,22 +24,21 @@ public class GetDialogContactsRequestHandler implements RequestHandler<GetDialog
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new ErrorResponse("Log in first");
+            return new GetDialogContactsResponse("Log in first");
         }
 
         DialogService dialogService = new DialogServiceImpl();
-        List<Dialog> dialogs = dialogService.findAllDialogsByUserId(requester.getId());
+        List<Dialog> dialogs = dialogService.findAllDialogsByUser(requester.getId());
 
         UserService userService = new UserServiceImpl();
-        List<String> contacts = new ArrayList<>();
+        List<Contact> contacts = new ArrayList<>();
 
         // Set requester as user1 in dialog
         for (Dialog dialog: dialogs) {
             if (dialog.getUser1Id() == requester.getId()) {
-                User user = userService.findUserById(dialog.getUser2Id());
-                contacts.add(user.getUsername());
+                contacts.add(new Contact(userService.findUser(dialog.getUser2Id())));
             } else {
-                contacts.add(requester.getUsername());
+                contacts.add(new Contact(userService.findUser(dialog.getUser1Id())));
             }
         }
 

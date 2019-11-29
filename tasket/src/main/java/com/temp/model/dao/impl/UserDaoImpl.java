@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     @Override
-    public User findById(int id) {
+    public User find(int id) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         User user = session.get(User.class, id);
         session.close();
@@ -19,10 +19,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User find(String username) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         User user = (User) session
-                .createQuery("from User where username =:username")
+                .createQuery("from User where username = :username")
                 .setParameter("username", username)
                 .uniqueResult();
         session.close();
@@ -30,11 +30,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllExcept(User user) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         @SuppressWarnings("unchecked")
         List<User> users = (List<User>) session
-                .createQuery("from User")
+                .createQuery("from User where id != :id")
+                .setParameter("id", user.getId())
                 .list();
         session.close();
         return users;

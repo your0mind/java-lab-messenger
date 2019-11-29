@@ -8,17 +8,13 @@ import java.io.Serializable;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    protected int id;
 
     @Column
-    private String username;
+    protected String username;
 
     @Column
     private String password;
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getId() {
         return id;

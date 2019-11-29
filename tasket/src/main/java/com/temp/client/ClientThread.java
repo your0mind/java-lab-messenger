@@ -1,10 +1,12 @@
 package com.temp.client;
 
+import com.temp.client.forms.SignInForm;
 import com.temp.client.messagehandlers.MessageHandler;
 import com.temp.client.messagehandlers.MessageHandlerBuilder;
 import com.temp.common.Message;
 import com.temp.common.requests.Request;
 
+import javax.swing.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,6 +37,7 @@ public class ClientThread extends Thread implements Closeable {
             }
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 

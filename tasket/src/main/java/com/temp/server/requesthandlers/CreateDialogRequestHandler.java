@@ -2,7 +2,6 @@ package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.CreateDialogRequest;
 import com.temp.common.responses.CreateDialogResponse;
-import com.temp.common.responses.ErrorResponse;
 import com.temp.common.responses.Response;
 import com.temp.common.updates.DialogContactUpdate;
 import com.temp.model.models.Dialog;
@@ -27,24 +26,24 @@ public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRe
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new ErrorResponse("Log in first");
+            return new CreateDialogResponse("Log in first");
         }
 
         UserService userService = new UserServiceImpl();
-        User userContact = userService.findUserByUsername(request.getParams().getContactUsername());
+        User userContact = userService.findUser(request.getParams().getContactUsername());
 
         if (userContact == null) {
-            return new ErrorResponse("Unknown contact");
+            return new CreateDialogResponse("Unknown contact");
         } else if (userContact.getId() == requester.getId()) {
-            return new ErrorResponse("You can't create dialog with yourself");
+            return new CreateDialogResponse("You can't create dialog with yourself");
         }
 
         DialogService dialogService = new DialogServiceImpl();
-        List<Dialog> dialogs = dialogService.findAllDialogsByUserId(requester.getId());
+        List<Dialog> dialogs = dialogService.findAllDialogsByUser(requester.getId());
 
         for (Dialog dialog: dialogs) {
             if (dialog.getUser1Id() == userContact.getId() || dialog.getUser2Id() == userContact.getId()) {
-                return new ErrorResponse("You already have dialog with this contact");
+                return new CreateDialogResponse("You already have dialog with this contact");
             }
         }
 

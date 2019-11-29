@@ -1,4 +1,7 @@
 package com.temp.common.responses;
 
-public class ListenNewDialogsResponse implements Response {
+public class ListenNewDialogsResponse extends Response {
+    public ListenNewDialogsResponse(String errorMessage) {
+        super(errorMessage);
+    }
 }

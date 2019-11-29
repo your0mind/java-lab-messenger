@@ -1,19 +1,25 @@
 package com.temp.common.responses;
 
+import com.temp.model.models.Contact;
+
 import java.util.List;
 
-public class GetDialogContactsResponse implements Response {
-    private List<String> contacts;
+public class GetDialogContactsResponse extends Response {
+    private List<Contact> contacts;
 
-    public List<String> getContacts() {
+    public List<Contact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<String> contacts) {
+    public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
 
-    public GetDialogContactsResponse(List<String> contacts) {
+    public GetDialogContactsResponse(String errorMessage) {
+        super(errorMessage);
+    }
+
+    public GetDialogContactsResponse(List<Contact> contacts) {
         this.contacts = contacts;
     }
 }

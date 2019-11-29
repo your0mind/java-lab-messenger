@@ -5,8 +5,8 @@ import com.temp.model.models.User;
 import java.util.List;
 
 public interface UserDao {
-    User findById(int id);
-    User findByUsername(String username);
-    List<User> getAll();
+    User find(int id);
+    User find(String username);
+    List<User> getAllExcept(User user);
     int save(User user);
 }
