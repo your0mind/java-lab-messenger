@@ -28,7 +28,7 @@ public class GetDialogContactsRequestHandler implements RequestHandler<GetDialog
         }
 
         DialogService dialogService = new DialogServiceImpl();
-        List<Dialog> dialogs = dialogService.findAllDialogsByUser(requester.getId());
+        List<Dialog> dialogs = dialogService.findAllDialogsByUser(requester);
 
         UserService userService = new UserServiceImpl();
         List<Contact> contacts = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.temp.common.requests.CreateDialogRequest;
 import com.temp.common.responses.CreateDialogResponse;
 import com.temp.common.responses.Response;
 import com.temp.common.updates.DialogContactUpdate;
+import com.temp.model.models.Contact;
 import com.temp.model.models.Dialog;
 import com.temp.model.models.User;
 import com.temp.model.services.DialogService;
@@ -16,6 +17,7 @@ import com.temp.server.UserSessionInfo;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRequest> {
@@ -30,7 +32,7 @@ public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRe
         }
 
         UserService userService = new UserServiceImpl();
-        User userContact = userService.findUser(request.getParams().getContactUsername());
+        User userContact = userService.findUser(request.getParams().getContact().getUsername());
 
         if (userContact == null) {
             return new CreateDialogResponse("Unknown contact");
@@ -39,7 +41,7 @@ public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRe
         }
 
         DialogService dialogService = new DialogServiceImpl();
-        List<Dialog> dialogs = dialogService.findAllDialogsByUser(requester.getId());
+        List<Dialog> dialogs = dialogService.findAllDialogsByUser(requester);
 
         for (Dialog dialog: dialogs) {
             if (dialog.getUser1Id() == userContact.getId() || dialog.getUser2Id() == userContact.getId()) {
@@ -50,18 +52,20 @@ public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRe
         Dialog dialog = new Dialog(requester.getId(), userContact.getId());
         dialogService.saveDialog(dialog);
 
-        for (ServerThread thread: threads) {
-            UserSessionInfo usInfo = thread.getUserSessionInfo();
-            if (usInfo.getUser().getId() == userContact.getId() && usInfo.isListenDialogContactUpdates()) {
-                try {
-                    thread.sendMessage(new DialogContactUpdate(requester.getUsername()));
-                } catch (IOException e) {
-                    logger.log(Level.SEVERE, "Failed to send dialog contact update to user", e);
-                }
-                break;
+        ServerThread contactThread = threads.stream()
+                .filter(t -> t.getUserSessionInfo().getUser().getId() == userContact.getId())
+                .filter(t -> t.getUserSessionInfo().isListenDialogContactUpdates())
+                .findFirst()
+                .orElse(null);
+
+        if (contactThread != null) {
+            try {
+                contactThread.sendMessage(new DialogContactUpdate(new Contact(requester)));
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Failed to send dialog contact update to user", e);
             }
         }
 
-        return new CreateDialogResponse(userContact.getUsername());
+        return new CreateDialogResponse(new Contact(userContact));
     }
 }

@@ -42,6 +42,7 @@
         </constraints>
         <properties>
           <background color="-8213827"/>
+          <enabled value="false"/>
           <text value="Create dialog"/>
         </properties>
       </component>

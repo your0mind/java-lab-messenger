@@ -40,8 +40,9 @@ public class SignInForm extends JFrame {
                     SignInForm.this.setEnabled(false);
 
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(SignInForm.this, ex.getMessage());
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    JOptionPane.showMessageDialog(SignInForm.this,
+                            ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -63,8 +64,9 @@ public class SignInForm extends JFrame {
                     SignInForm.this.setEnabled(false);
 
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(SignInForm.this, ex.getMessage());
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    JOptionPane.showMessageDialog(SignInForm.this,
+                            ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

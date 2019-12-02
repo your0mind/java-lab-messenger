@@ -1,13 +1,15 @@
 package com.temp.common.requests.params;
 
-public class CreateDialogRequestParams implements RequestParams {
-    private String contactUsername;
+import com.temp.model.models.Contact;
 
-    public String getContactUsername() {
-        return contactUsername;
+public class CreateDialogRequestParams implements RequestParams {
+    private Contact contact;
+
+    public Contact getContact() {
+        return contact;
     }
 
-    public CreateDialogRequestParams(String contactUsername) {
-        this.contactUsername = contactUsername;
+    public CreateDialogRequestParams(Contact contact) {
+        this.contact = contact;
     }
 }

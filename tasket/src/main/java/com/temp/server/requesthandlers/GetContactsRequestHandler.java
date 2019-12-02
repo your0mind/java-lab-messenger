@@ -26,7 +26,7 @@ public class GetContactsRequestHandler implements RequestHandler<GetContactsRequ
 
         UserService userService = new UserServiceImpl();
         List<User> users = userService.getAllUsersExcept(requester);
-        List<Contact> contacts = users.stream().map(u -> new Contact(u.getUsername())).collect(Collectors.toList());
+        List<Contact> contacts = users.stream().map(Contact::new).collect(Collectors.toList());
 
         return new GetContactsResponse(contacts);
     }

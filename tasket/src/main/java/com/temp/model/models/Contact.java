@@ -9,7 +9,12 @@ public class Contact implements Serializable {
         return username;
     }
 
-    public Contact(String username) {
-        this.username = username;
+    public Contact(User user) {
+        username = user.getUsername();
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 }

@@ -1,7 +1,9 @@
 package com.temp.common.updates;
 
-public class DialogContactUpdate extends Update<String> {
-    public DialogContactUpdate(String update) {
+import com.temp.model.models.Contact;
+
+public class DialogContactUpdate extends Update<Contact> {
+    public DialogContactUpdate(Contact update) {
         super(update);
     }
 }

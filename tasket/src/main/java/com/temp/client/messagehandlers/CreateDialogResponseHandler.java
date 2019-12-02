@@ -2,25 +2,24 @@ package com.temp.client.messagehandlers;
 
 import com.temp.client.Client;
 import com.temp.client.forms.MainForm;
-import com.temp.common.responses.GetDialogContactsResponse;
+import com.temp.common.responses.CreateDialogResponse;
 import com.temp.model.models.Contact;
 
 import javax.swing.*;
 
-public class GetDialogContactsResponseHandler implements MessageHandler<GetDialogContactsResponse> {
+public class CreateDialogResponseHandler implements MessageHandler<CreateDialogResponse> {
     @Override
-    public void handle(GetDialogContactsResponse response, Client client) {
+    public void handle(CreateDialogResponse response, Client client) {
         if (response.hasError()) {
             JOptionPane.showMessageDialog(MainForm.getInstance(client),
                     response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        DefaultListModel<Contact> dialogContactsModel = client
+        DefaultListModel<Contact> dialogContactsListModel = client
                 .getDefaultListModels()
                 .getDialogContactsListModel();
 
-        dialogContactsModel.clear();
-        dialogContactsModel.addAll(response.getContacts());
+        dialogContactsListModel.addElement(response.getDialogContact());
     }
 }
