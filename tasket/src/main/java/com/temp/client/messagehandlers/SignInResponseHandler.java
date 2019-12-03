@@ -10,13 +10,16 @@ import javax.swing.*;
 public class SignInResponseHandler implements MessageHandler<SignInResponse> {
     @Override
     public void handle(SignInResponse response, Client client) {
+        SignInForm signInForm = SignInForm.getInstance(client);
+        signInForm.setEnabled(true);
+
         if (response.hasError()) {
-            JOptionPane.showMessageDialog(MainForm.getInstance(client),
+            JOptionPane.showMessageDialog(signInForm,
                     response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         MainForm.getInstance(client).setVisible(true);
-        SignInForm.getInstance(client).dispose();
+        signInForm.dispose();
     }
 }

@@ -3,7 +3,7 @@ package com.temp.client.messagehandlers;
 import com.temp.client.Client;
 import com.temp.client.forms.MainForm;
 import com.temp.common.responses.CreateDialogResponse;
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 
 import javax.swing.*;
 

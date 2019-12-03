@@ -5,7 +5,7 @@ import com.temp.common.requests.CreateDialogRequest;
 import com.temp.common.requests.GetContactsRequest;
 import com.temp.common.requests.params.CreateDialogRequestParams;
 import com.temp.common.requests.params.GetContactsRequestParams;
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -22,6 +22,7 @@ public class CreateDialogForm extends JDialog {
     public CreateDialogForm(Client client, JFrame owner) {
         super(owner, true);
 
+        client.getDefaultListModels().getContactsListModel().clear();
         contactsList.setModel(client.getDefaultListModels().getContactsListModel());
 
         try {
@@ -43,7 +44,8 @@ public class CreateDialogForm extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    CreateDialogRequestParams params = new CreateDialogRequestParams(contactsList.getSelectedValue());
+                    Contact contact = contactsList.getSelectedValue();
+                    CreateDialogRequestParams params = new CreateDialogRequestParams(contact);
                     client.getClientThread().sendRequestToServer(new CreateDialogRequest(params));
                     CreateDialogForm.this.dispose();
                 } catch (IOException ex) {

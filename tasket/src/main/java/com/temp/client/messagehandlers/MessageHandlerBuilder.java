@@ -13,6 +13,7 @@ public class MessageHandlerBuilder {
         else if (message instanceof GetContactsResponse)        return new GetContactsResponseHandler();
         else if (message instanceof DialogContactUpdate)        return new DialogContactUpdateHandler();
         else if (message instanceof CreateDialogResponse)       return new CreateDialogResponseHandler();
+        else if (message instanceof GetDialogMessagesResponse)  return new GetDialogMessagesResponseHandler();
         else                                                    throw new UnknownMessageException();
     }
 }

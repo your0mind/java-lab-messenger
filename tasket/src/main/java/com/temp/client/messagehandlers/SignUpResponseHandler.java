@@ -10,13 +10,15 @@ import javax.swing.*;
 public class SignUpResponseHandler implements MessageHandler<SignUpResponse> {
     @Override
     public void handle(SignUpResponse response, Client client) {
+        SignInForm signInForm = SignInForm.getInstance(client);
+        signInForm.setEnabled(true);
+
         if (response.hasError()) {
-            JOptionPane.showMessageDialog(MainForm.getInstance(client),
+            JOptionPane.showMessageDialog(signInForm,
                     response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        SignInForm.getInstance(client).setEnabled(true);
-        JOptionPane.showMessageDialog(SignInForm.getInstance(client), "Successful registration");
+        JOptionPane.showMessageDialog(signInForm, "Successful registration");
     }
 }

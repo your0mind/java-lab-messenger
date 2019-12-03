@@ -3,12 +3,18 @@ package com.temp.client.forms;
 import com.temp.client.Client;
 import com.temp.client.ClientDefaultListModels;
 import com.temp.client.forms.customcellrenderers.MessageCellRenderer;
+import com.temp.common.models.ChatMessage;
+import com.temp.common.models.Contact;
 import com.temp.common.requests.GetDialogContactsRequest;
+import com.temp.common.requests.GetDialogMessagesRequest;
 import com.temp.common.requests.params.GetDialogContactsRequestParams;
-import com.temp.model.models.Contact;
+import com.temp.common.requests.params.GetDialogMessagesRequestParams;
 
 import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MainForm extends JFrame {
@@ -26,16 +32,19 @@ public class MainForm extends JFrame {
     private JTextField messageToConfField;
     private JButton showParticipantsButton;
     private JButton showTasksButton;
-    private JList<String> dialogMessagesList;
+    private JList<ChatMessage> dialogMessagesList;
 
     private MainForm(final Client client) {
-        ClientDefaultListModels dlm = client.getDefaultListModels();
+        ClientDefaultListModels cdlm = client.getDefaultListModels();
 
-        dialogContactsList.setModel(dlm.getDialogContactsListModel());
+        cdlm.getDialogContactsListModel().clear();
+        cdlm.getDialogMessagesListModel().clear();
 
-        DefaultListModel<String> m = new DefaultListModel<>();
-        m.addElement("<html>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font>Text color: <font color='red'>red</font></html>");
-//        dialogMessagesList.setCellRenderer(new MessageCellRenderer());
+        dialogContactsList.setModel(cdlm.getDialogContactsListModel());
+        dialogMessagesList.setModel(cdlm.getDialogMessagesListModel());
+
+        MessageCellRenderer renderer = new MessageCellRenderer(new Contact(client.getUsername()));
+        dialogMessagesList.setCellRenderer(renderer);
 //
 //        ComponentListener l = new ComponentAdapter() {
 //
@@ -52,14 +61,13 @@ public class MainForm extends JFrame {
 //
 //        dialogMessagesList.addComponentListener(l);
 
-        dialogMessagesList.setModel(m);
-
         try {
             GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
             client.getClientThread().sendRequestToServer(new GetDialogContactsRequest(params));
 
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         createDialogButton.addActionListener(new ActionListener() {
@@ -67,6 +75,24 @@ public class MainForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CreateDialogForm createDialogForm = new CreateDialogForm(client, MainForm.this);
                 createDialogForm.setVisible(true);
+            }
+        });
+
+        dialogContactsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                cdlm.getDialogMessagesListModel().clear();
+
+                try {
+                    Contact dialogContact = dialogContactsList.getSelectedValue();
+                    GetDialogMessagesRequest request = new GetDialogMessagesRequest(
+                            new GetDialogMessagesRequestParams(dialogContact, true));
+                    client.getClientThread().sendRequestToServer(request);
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(MainForm.this, ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
