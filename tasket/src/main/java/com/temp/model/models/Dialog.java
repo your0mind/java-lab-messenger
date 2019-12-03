@@ -16,6 +16,10 @@ public class Dialog implements Serializable {
     @Column(name = "user2_id")
     private int user2Id;
 
+    public int getId() {
+        return id;
+    }
+
     public int getUser1Id() {
         return user1Id;
     }

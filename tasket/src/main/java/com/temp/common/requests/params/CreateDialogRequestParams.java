@@ -1,6 +1,6 @@
 package com.temp.common.requests.params;
 
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 
 public class CreateDialogRequestParams implements RequestParams {
     private Contact contact;

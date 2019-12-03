@@ -1,6 +1,6 @@
 package com.temp.model.utils;
 
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 import com.temp.model.models.Dialog;
 import com.temp.model.models.DialogMessage;
 import com.temp.model.models.User;
@@ -23,7 +23,6 @@ public class HibernateSessionFactoryUtil {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(User.class);
-                configuration.addAnnotatedClass(Contact.class);
                 configuration.addAnnotatedClass(Dialog.class);
                 configuration.addAnnotatedClass(DialogMessage.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()

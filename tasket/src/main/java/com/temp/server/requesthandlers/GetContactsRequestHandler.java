@@ -3,7 +3,7 @@ package com.temp.server.requesthandlers;
 import com.temp.common.requests.GetContactsRequest;
 import com.temp.common.responses.GetContactsResponse;
 import com.temp.common.responses.Response;
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 import com.temp.model.models.User;
 import com.temp.model.services.UserService;
 import com.temp.model.services.impl.UserServiceImpl;
@@ -26,7 +26,8 @@ public class GetContactsRequestHandler implements RequestHandler<GetContactsRequ
 
         UserService userService = new UserServiceImpl();
         List<User> users = userService.getAllUsersExcept(requester);
-        List<Contact> contacts = users.stream().map(Contact::new).collect(Collectors.toList());
+        List<Contact> contacts = users.stream()
+                .map(u -> new Contact(u.getUsername())).collect(Collectors.toList());
 
         return new GetContactsResponse(contacts);
     }

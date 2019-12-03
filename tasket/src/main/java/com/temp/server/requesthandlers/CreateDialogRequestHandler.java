@@ -4,7 +4,7 @@ import com.temp.common.requests.CreateDialogRequest;
 import com.temp.common.responses.CreateDialogResponse;
 import com.temp.common.responses.Response;
 import com.temp.common.updates.DialogContactUpdate;
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 import com.temp.model.models.Dialog;
 import com.temp.model.models.User;
 import com.temp.model.services.DialogService;
@@ -17,7 +17,6 @@ import com.temp.server.UserSessionInfo;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 
 public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRequest> {
@@ -60,12 +59,13 @@ public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRe
 
         if (contactThread != null) {
             try {
-                contactThread.sendMessage(new DialogContactUpdate(new Contact(requester)));
+                Contact updateContact = new Contact(requester.getUsername());
+                contactThread.sendMessage(new DialogContactUpdate(updateContact));
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "Failed to send dialog contact update to user", e);
             }
         }
 
-        return new CreateDialogResponse(new Contact(userContact));
+        return new CreateDialogResponse(new Contact(userContact.getUsername()));
     }
 }

@@ -1,6 +1,6 @@
 package com.temp.common.responses;
 
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.temp.common.updates;
 
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 
 public class DialogContactUpdate extends Update<Contact> {
     public DialogContactUpdate(Contact update) {

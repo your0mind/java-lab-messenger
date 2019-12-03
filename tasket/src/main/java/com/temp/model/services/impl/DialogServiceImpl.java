@@ -12,6 +12,11 @@ public class DialogServiceImpl implements DialogService {
     private DialogDao dialogsDao = new DialogDaoImpl();
 
     @Override
+    public Dialog findDialog(User user1, User user2) {
+        return dialogsDao.find(user1, user2);
+    }
+
+    @Override
     public List<Dialog> findAllDialogsByUser(User user) {
         return dialogsDao.findAllByUser(user);
     }

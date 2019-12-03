@@ -11,6 +11,19 @@ import java.util.List;
 
 public class DialogDaoImpl implements DialogDao {
     @Override
+    public Dialog find(User user1, User user2) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Dialog dialog = (Dialog) session
+                .createQuery("from Dialog where user1_id = :user1Id and user2_id = :user2Id " +
+                        "or user1_id = :user2Id and user2_id = :user1Id")
+                .setParameter("user1Id", user1.getId())
+                .setParameter("user2Id", user2.getId())
+                .uniqueResult();
+        session.close();
+        return dialog;
+    }
+
+    @Override
     public List<Dialog> findAllByUser(User user) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         @SuppressWarnings("unchecked")

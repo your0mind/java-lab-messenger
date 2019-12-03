@@ -3,7 +3,7 @@ package com.temp.server.requesthandlers;
 import com.temp.common.requests.GetDialogContactsRequest;
 import com.temp.common.responses.GetDialogContactsResponse;
 import com.temp.common.responses.Response;
-import com.temp.model.models.Contact;
+import com.temp.common.models.Contact;
 import com.temp.model.models.Dialog;
 import com.temp.model.models.User;
 import com.temp.model.services.DialogService;
@@ -35,11 +35,8 @@ public class GetDialogContactsRequestHandler implements RequestHandler<GetDialog
 
         // Set requester as user1 in dialog
         for (Dialog dialog: dialogs) {
-            if (dialog.getUser1Id() == requester.getId()) {
-                contacts.add(new Contact(userService.findUser(dialog.getUser2Id())));
-            } else {
-                contacts.add(new Contact(userService.findUser(dialog.getUser1Id())));
-            }
+            int userId = (dialog.getUser1Id() == requester.getId()) ? dialog.getUser2Id() : dialog.getUser1Id();
+            contacts.add(new Contact(userService.findUser(userId).getUsername()));
         }
 
         boolean listenUpdates = request.getParams().isListenUpdates();

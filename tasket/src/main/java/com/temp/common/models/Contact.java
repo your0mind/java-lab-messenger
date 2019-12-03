@@ -1,4 +1,4 @@
-package com.temp.model.models;
+package com.temp.common.models;
 
 import java.io.Serializable;
 
@@ -9,8 +9,8 @@ public class Contact implements Serializable {
         return username;
     }
 
-    public Contact(User user) {
-        username = user.getUsername();
+    public Contact(String username) {
+        this.username = username;
     }
 
     @Override
