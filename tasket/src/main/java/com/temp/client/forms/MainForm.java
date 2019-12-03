@@ -13,8 +13,7 @@ import com.temp.common.requests.params.GetDialogMessagesRequestParams;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 
 public class MainForm extends JFrame {
@@ -45,21 +44,7 @@ public class MainForm extends JFrame {
 
         MessageCellRenderer renderer = new MessageCellRenderer(new Contact(client.getUsername()));
         dialogMessagesList.setCellRenderer(renderer);
-//
-//        ComponentListener l = new ComponentAdapter() {
-//
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                // next line possible if list is of type JXList
-//                // list.invalidateCellSizeCache();
-//                // for core: force cache invalidation by temporarily setting fixed height
-//                dialogMessagesList.setFixedCellHeight(10);
-//                dialogMessagesList.setFixedCellHeight(-1);
-//            }
-//
-//        };
-//
-//        dialogMessagesList.addComponentListener(l);
+
 
         try {
             GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
@@ -81,20 +66,32 @@ public class MainForm extends JFrame {
         dialogContactsList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                cdlm.getDialogMessagesListModel().clear();
+                if (!e.getValueIsAdjusting()) {
+                    cdlm.getDialogMessagesListModel().clear();
 
-                try {
-                    Contact dialogContact = dialogContactsList.getSelectedValue();
-                    GetDialogMessagesRequest request = new GetDialogMessagesRequest(
-                            new GetDialogMessagesRequestParams(dialogContact, true));
-                    client.getClientThread().sendRequestToServer(request);
+                    try {
+                        Contact dialogContact = dialogContactsList.getSelectedValue();
+                        GetDialogMessagesRequest request = new GetDialogMessagesRequest(
+                                new GetDialogMessagesRequestParams(dialogContact, true));
+                        client.getClientThread().sendRequestToServer(request);
 
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(MainForm.this, ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
+                        System.out.println("1");
+
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(MainForm.this, ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
+
+//        dialogMessagesList.addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                dialogMessagesList.setFixedCellHeight(10);
+//                dialogMessagesList.setFixedCellHeight(-1);
+//            }
+//        });
 
         initUI();
     }
