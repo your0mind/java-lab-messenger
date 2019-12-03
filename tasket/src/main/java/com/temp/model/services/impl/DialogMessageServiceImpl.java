@@ -12,6 +12,11 @@ public class DialogMessageServiceImpl implements DialogMessageService {
     private DialogMessageDao dialogMessageDao = new DialogMessageDaoImpl();
 
     @Override
+    public DialogMessage findMessage(int id) {
+        return dialogMessageDao.find(id);
+    }
+
+    @Override
     public List<DialogMessage> findAllMessages(Dialog dialog) {
         return dialogMessageDao.findAll(dialog);
     }

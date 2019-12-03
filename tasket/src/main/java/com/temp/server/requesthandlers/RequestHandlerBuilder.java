@@ -11,6 +11,7 @@ public class RequestHandlerBuilder {
         else if (request instanceof GetContactsRequest)         return new GetContactsRequestHandler();
         else if (request instanceof CreateDialogRequest)        return new CreateDialogRequestHandler();
         else if (request instanceof GetDialogMessagesRequest)   return new GetDialogMessagesRequestHandler();
+        else if (request instanceof SendDialogMessageRequest)   return new SendDialogMessageRequestHandler();
         else                                                    throw new UnknownRequestException();
     }
 }

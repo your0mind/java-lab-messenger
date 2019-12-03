@@ -11,6 +11,14 @@ import java.util.List;
 
 public class DialogMessageDaoImpl implements DialogMessageDao {
     @Override
+    public DialogMessage find(int id) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        DialogMessage dialogMessage = session.get(DialogMessage.class, id);
+        session.close();
+        return dialogMessage;
+    }
+
+    @Override
     public List<DialogMessage> findAll(Dialog dialog) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         @SuppressWarnings("unchecked")

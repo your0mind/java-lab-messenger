@@ -1,35 +1,19 @@
-package com.temp.client.forms;
-
-import com.temp.client.forms.customcellrenderers.TestCellRenderer;
+package com.temp.client.forms.customcellrenderers;
 
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
-public class TestForm extends JFrame {
-    private JTextPane textPane1;
-    private JPanel panel1;
-    private JList<String> list1;
-
-    public TestForm() throws HeadlessException {
-//        list1.setCellRenderer(new TestCellRenderer());
-//
-//        DefaultListModel<String> dlm = new DefaultListModel<>();
-//        dlm.addElement("aaaaaa aaaaaaaa aaaaaa aaaaaaa aaaaaa aaaaaaaa aaaaaaa aaaaaaa aaaaaaa aaaaaa aaaaaaaaaa aaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-//        dlm.addElement("aaaaaa aaaaaaaa aaaaaa aaaaaaa aaaaaa aaaaaaaa aaaaaaa aaaaaaa aaaaaaa aaaaaa aaaaaaaaaa aaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-//        list1.setModel(dlm);
-
-        initUI();
+public class TestCellRenderer implements ListCellRenderer<String> {
+    @Override
+    public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+        JTextPane jTextPane = new JTextPane();
+        jTextPane.setEditorKit(new WrapEditorKit());
+        jTextPane.setText(value);
+        return jTextPane;
     }
 
-    private void initUI() {
-        setTitle("Test");
-        setContentPane(panel1);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-    }
-
-    class WrapEditorKit extends StyledEditorKit {
+    public class WrapEditorKit extends StyledEditorKit {
         ViewFactory defaultFactory=new WrapColumnFactory();
         public ViewFactory getViewFactory() {
             return defaultFactory;
@@ -73,5 +57,14 @@ public class TestForm extends JFrame {
                     throw new IllegalArgumentException("Invalid axis: " + axis);
             }
         }
+    }
+
+
+    private void appendToPane(JTextPane jTextPane, String msg, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+
+        int len = jTextPane.getDocument().getLength();
+        jTextPane.setCaretPosition(len);
+        jTextPane.replaceSelection(msg);
     }
 }

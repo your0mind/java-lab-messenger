@@ -3,13 +3,13 @@ package com.temp.client.messagehandlers;
 import com.temp.client.Client;
 import com.temp.client.forms.MainForm;
 import com.temp.common.models.ChatMessage;
-import com.temp.common.responses.GetDialogMessagesResponse;
+import com.temp.common.responses.SendDialogMessageResponse;
 
 import javax.swing.*;
 
-public class GetDialogMessagesResponseHandler implements MessageHandler<GetDialogMessagesResponse> {
+public class SendDialogMessageResponseHandler implements MessageHandler<SendDialogMessageResponse> {
     @Override
-    public void handle(GetDialogMessagesResponse response, Client client) {
+    public void handle(SendDialogMessageResponse response, Client client) {
         if (response.hasError()) {
             JOptionPane.showMessageDialog(MainForm.getInstance(client),
                     response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -20,7 +20,6 @@ public class GetDialogMessagesResponseHandler implements MessageHandler<GetDialo
                 .getDefaultListModels()
                 .getDialogMessagesListModel();
 
-        dialogMessagesListModel.clear();
-        dialogMessagesListModel.addAll(response.getMessages());
+        dialogMessagesListModel.addElement(response.getSentMessage());
     }
 }

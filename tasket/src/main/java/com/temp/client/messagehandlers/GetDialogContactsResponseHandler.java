@@ -20,6 +20,7 @@ public class GetDialogContactsResponseHandler implements MessageHandler<GetDialo
                 .getDefaultListModels()
                 .getDialogContactsListModel();
 
+        dialogContactsModel.clear();
         dialogContactsModel.addAll(response.getContacts());
     }
 }

@@ -7,8 +7,10 @@ import com.temp.common.models.ChatMessage;
 import com.temp.common.models.Contact;
 import com.temp.common.requests.GetDialogContactsRequest;
 import com.temp.common.requests.GetDialogMessagesRequest;
+import com.temp.common.requests.SendDialogMessageRequest;
 import com.temp.common.requests.params.GetDialogContactsRequestParams;
 import com.temp.common.requests.params.GetDialogMessagesRequestParams;
+import com.temp.common.requests.params.SendDialogMessageRequestParams;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -36,20 +38,16 @@ public class MainForm extends JFrame {
     private MainForm(final Client client) {
         ClientDefaultListModels cdlm = client.getDefaultListModels();
 
-        cdlm.getDialogContactsListModel().clear();
-        cdlm.getDialogMessagesListModel().clear();
-
         dialogContactsList.setModel(cdlm.getDialogContactsListModel());
         dialogMessagesList.setModel(cdlm.getDialogMessagesListModel());
 
         MessageCellRenderer renderer = new MessageCellRenderer(new Contact(client.getUsername()));
         dialogMessagesList.setCellRenderer(renderer);
 
+        GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
 
         try {
-            GetDialogContactsRequestParams params = new GetDialogContactsRequestParams(true);
             client.getClientThread().sendRequestToServer(new GetDialogContactsRequest(params));
-
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -67,16 +65,12 @@ public class MainForm extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    cdlm.getDialogMessagesListModel().clear();
+                    Contact dialogContact = dialogContactsList.getSelectedValue();
+                    GetDialogMessagesRequest request = new GetDialogMessagesRequest(
+                            new GetDialogMessagesRequestParams(dialogContact, true));
 
                     try {
-                        Contact dialogContact = dialogContactsList.getSelectedValue();
-                        GetDialogMessagesRequest request = new GetDialogMessagesRequest(
-                                new GetDialogMessagesRequestParams(dialogContact, true));
                         client.getClientThread().sendRequestToServer(request);
-
-                        System.out.println("1");
-
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(MainForm.this, ex.getMessage(),
                                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -85,13 +79,31 @@ public class MainForm extends JFrame {
             }
         });
 
-//        dialogMessagesList.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                dialogMessagesList.setFixedCellHeight(10);
-//                dialogMessagesList.setFixedCellHeight(-1);
-//            }
-//        });
+        dialogMessagesList.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                dialogMessagesList.setFixedCellHeight(10);
+                dialogMessagesList.setFixedCellHeight(-1);
+            }
+        });
+
+        sendToDialogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String message = messageToDialogField.getText();
+                Contact contact = dialogContactsList.getSelectedValue();
+
+                SendDialogMessageRequestParams params = new SendDialogMessageRequestParams(message, contact);
+
+                try {
+                    client.getClientThread().sendRequestToServer(new SendDialogMessageRequest(params));
+                    messageToDialogField.setText("");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(MainForm.this, ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         initUI();
     }

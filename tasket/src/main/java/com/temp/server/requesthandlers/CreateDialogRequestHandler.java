@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class CreateDialogRequestHandler implements RequestHandler<CreateDialogRequest> {
-
     @Override
     public Response handle(CreateDialogRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
         UserSessionInfo userSessionInfo = callerThread.getUserSessionInfo();

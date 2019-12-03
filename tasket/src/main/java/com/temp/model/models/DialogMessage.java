@@ -21,7 +21,7 @@ public class DialogMessage implements Serializable {
     private String text;
 
     @GeneratedValue
-    @Column(columnDefinition = "DATETIME")
+    @Column(columnDefinition = "DATETIME", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 

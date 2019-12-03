@@ -47,10 +47,10 @@ public class Client {
     }
 
     public static void main(String[] args) {
-//        Client client = new Client();
+        Client client = new Client();
 
         try {
-//            client.connectToServer("localhost", 4004);
+            client.connectToServer("localhost", 4004);
             logger.log(Level.INFO, "Connection to server successfully created");
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         }
@@ -58,9 +58,6 @@ public class Client {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
-
-        TestForm testForm = new TestForm();
-        testForm.setVisible(true);
-//        SignInForm.getInstance(client).setVisible(true);
+        SignInForm.getInstance(client).setVisible(true);
     }
 }

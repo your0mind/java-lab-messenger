@@ -20,6 +20,7 @@ public class GetContactsResponseHandler implements MessageHandler<GetContactsRes
                 .getDefaultListModels()
                 .getContactsListModel();
 
+        contactsModel.clear();
         contactsModel.addAll(response.getContacts());
     }
 }
