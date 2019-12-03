@@ -3,7 +3,6 @@ package com.temp.client.messagehandlers;
 import com.temp.client.Client;
 import com.temp.client.forms.MainForm;
 import com.temp.common.responses.CreateDialogResponse;
-import com.temp.common.models.Contact;
 
 import javax.swing.*;
 
@@ -16,10 +15,7 @@ public class CreateDialogResponseHandler implements MessageHandler<CreateDialogR
             return;
         }
 
-        DefaultListModel<Contact> dialogContactsListModel = client
-                .getDefaultListModels()
-                .getDialogContactsListModel();
-
-        dialogContactsListModel.addElement(response.getDialogContact());
+        client.getDefaultListModels().getDialogContactsListModel()
+                .addElement(response.getDialogContact());
     }
 }

@@ -9,10 +9,6 @@ import javax.swing.*;
 public class DialogMessageUpdateHandler implements MessageHandler<DialogMessageUpdate> {
     @Override
     public void handle(DialogMessageUpdate response, Client client) {
-        DefaultListModel<ChatMessage> dialogMessagesListModel = client
-                .getDefaultListModels()
-                .getDialogMessagesListModel();
-
-        dialogMessagesListModel.addElement(response.getUpdate());
+        client.getDefaultListModels().getDialogMessagesListModel().addElement(response.getUpdate());
     }
 }

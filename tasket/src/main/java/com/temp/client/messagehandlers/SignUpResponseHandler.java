@@ -1,7 +1,6 @@
 package com.temp.client.messagehandlers;
 
 import com.temp.client.Client;
-import com.temp.client.forms.MainForm;
 import com.temp.client.forms.SignInForm;
 import com.temp.common.responses.SignUpResponse;
 

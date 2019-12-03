@@ -16,11 +16,10 @@ public class GetDialogContactsResponseHandler implements MessageHandler<GetDialo
             return;
         }
 
-        DefaultListModel<Contact> dialogContactsModel = client
-                .getDefaultListModels()
+        DefaultListModel<Contact> model = client.getDefaultListModels()
                 .getDialogContactsListModel();
 
-        dialogContactsModel.clear();
-        dialogContactsModel.addAll(response.getContacts());
+        model.clear();
+        model.addAll(response.getContacts());
     }
 }

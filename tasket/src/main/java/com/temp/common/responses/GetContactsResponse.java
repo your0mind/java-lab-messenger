@@ -11,10 +11,6 @@ public class GetContactsResponse extends Response {
         return contacts;
     }
 
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
     public GetContactsResponse(String errorMessage) {
         super(errorMessage);
     }

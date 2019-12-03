@@ -16,11 +16,10 @@ public class GetDialogMessagesResponseHandler implements MessageHandler<GetDialo
             return;
         }
 
-        DefaultListModel<ChatMessage> dialogMessagesListModel = client
-                .getDefaultListModels()
+        DefaultListModel<ChatMessage> model = client.getDefaultListModels()
                 .getDialogMessagesListModel();
 
-        dialogMessagesListModel.clear();
-        dialogMessagesListModel.addAll(response.getMessages());
+        model.clear();
+        model.addAll(response.getMessages());
     }
 }

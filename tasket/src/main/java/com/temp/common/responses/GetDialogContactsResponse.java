@@ -11,10 +11,6 @@ public class GetDialogContactsResponse extends Response {
         return contacts;
     }
 
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
-
     public GetDialogContactsResponse(String errorMessage) {
         super(errorMessage);
     }
