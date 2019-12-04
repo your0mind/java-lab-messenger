@@ -15,4 +15,9 @@ public class ConferenceParticipantServiceImpl implements ConferenceParticipantSe
     public List<ConferenceParticipant> findAllParticipationByUser(User user) {
         return dao.findAllByUser(user);
     }
+
+    @Override
+    public int saveParticipant(ConferenceParticipant participant) {
+        return dao.save(participant);
+    }
 }

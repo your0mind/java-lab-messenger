@@ -9,8 +9,8 @@ public class GetConferencesResponse extends Response {
         return conferenceNames;
     }
 
-    public GetConferencesResponse(String errorMessage) {
-        super(errorMessage);
+    public GetConferencesResponse(ErrorMessage error) {
+        super(error);
     }
 
     public GetConferencesResponse(List<String> conferenceNames) {

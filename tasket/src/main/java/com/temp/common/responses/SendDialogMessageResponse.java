@@ -9,11 +9,11 @@ public class SendDialogMessageResponse extends Response {
         return sentMessage;
     }
 
-    public SendDialogMessageResponse(ChatMessage sentMessage) {
-        this.sentMessage = sentMessage;
+    public SendDialogMessageResponse(ErrorMessage error) {
+        super(error);
     }
 
-    public SendDialogMessageResponse(String errorMessage) {
-        super(errorMessage);
+    public SendDialogMessageResponse(ChatMessage sentMessage) {
+        this.sentMessage = sentMessage;
     }
 }

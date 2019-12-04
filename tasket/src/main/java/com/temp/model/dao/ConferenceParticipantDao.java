@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ConferenceParticipantDao {
     List<ConferenceParticipant> findAllByUser(User user);
+    int save(ConferenceParticipant participant);
 }

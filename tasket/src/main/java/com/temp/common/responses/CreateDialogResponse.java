@@ -9,8 +9,8 @@ public class CreateDialogResponse extends Response {
         return dialogContact;
     }
 
-    public CreateDialogResponse(String errorMessage) {
-        super(errorMessage);
+    public CreateDialogResponse(ErrorMessage error) {
+        super(error);
     }
 
     public CreateDialogResponse(Contact dialogContact) {

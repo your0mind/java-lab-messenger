@@ -11,8 +11,8 @@ public class GetDialogContactsResponse extends Response {
         return contacts;
     }
 
-    public GetDialogContactsResponse(String errorMessage) {
-        super(errorMessage);
+    public GetDialogContactsResponse(ErrorMessage error) {
+        super(error);
     }
 
     public GetDialogContactsResponse(List<Contact> contacts) {

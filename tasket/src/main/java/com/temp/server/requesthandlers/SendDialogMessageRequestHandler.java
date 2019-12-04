@@ -4,6 +4,7 @@ import com.temp.common.models.ChatMessage;
 import com.temp.common.models.Contact;
 import com.temp.common.requests.SendDialogMessageRequest;
 import com.temp.common.responses.CreateDialogResponse;
+import com.temp.common.responses.ErrorMessage;
 import com.temp.common.responses.Response;
 import com.temp.common.responses.SendDialogMessageResponse;
 import com.temp.common.updates.DialogMessageUpdate;
@@ -20,32 +21,35 @@ import com.temp.server.ServerThread;
 import com.temp.server.UserSessionInfo;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 
 public class SendDialogMessageRequestHandler implements RequestHandler<SendDialogMessageRequest> {
 
     @Override
-    public Response handle(SendDialogMessageRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
+    public Response handle(SendDialogMessageRequest request, ServerThread callerThread,
+                           LinkedList<ServerThread> threads) {
         UserSessionInfo userSessionInfo = callerThread.getUserSessionInfo();
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new CreateDialogResponse("Log in first");
+            return new CreateDialogResponse(new ErrorMessage("Log in first"));
         }
 
         UserService userService = new UserServiceImpl();
         User user = userService.findUser(request.getParams().getDialogContact().getUsername());
 
         if (user == null) {
-            return new SendDialogMessageResponse("Unknown contact");
+            return new SendDialogMessageResponse(new ErrorMessage("Unknown contact"));
         }
 
         DialogService dialogService = new DialogServiceImpl();
         Dialog dialog = dialogService.findDialog(requester, user);
 
         if (dialog == null) {
-            return new SendDialogMessageResponse("You have no dialog with that contact");
+            ErrorMessage error = new ErrorMessage("You have no dialog with that contact");
+            return new SendDialogMessageResponse(error);
         }
 
         DialogMessageService dialogMessageService = new DialogMessageServiceImpl();
@@ -60,7 +64,10 @@ public class SendDialogMessageRequestHandler implements RequestHandler<SendDialo
                 .orElse(null);
 
         Contact sender = new Contact(requester.getUsername());
-        ChatMessage chatMessage = new ChatMessage(sender, dialogMessage.getText(), dialogMessage.getDate());
+        String text = dialogMessage.getText();
+        Date date = dialogMessage.getDate();
+
+        ChatMessage chatMessage = new ChatMessage(sender, text, date);
 
         if (contactThread != null) {
             try {

@@ -11,8 +11,8 @@ public class GetContactsResponse extends Response {
         return contacts;
     }
 
-    public GetContactsResponse(String errorMessage) {
-        super(errorMessage);
+    public GetContactsResponse(ErrorMessage error) {
+        super(error);
     }
 
     public GetContactsResponse(List<Contact> contacts) {

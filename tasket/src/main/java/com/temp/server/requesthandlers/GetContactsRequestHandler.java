@@ -1,6 +1,7 @@
 package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.GetContactsRequest;
+import com.temp.common.responses.ErrorMessage;
 import com.temp.common.responses.GetContactsResponse;
 import com.temp.common.responses.Response;
 import com.temp.common.models.Contact;
@@ -16,12 +17,13 @@ import java.util.stream.Collectors;
 
 public class GetContactsRequestHandler implements RequestHandler<GetContactsRequest> {
     @Override
-    public Response handle(GetContactsRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
+    public Response handle(GetContactsRequest request, ServerThread callerThread,
+                           LinkedList<ServerThread> threads) {
         UserSessionInfo userSessionInfo = callerThread.getUserSessionInfo();
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new GetContactsResponse("Log in first");
+            return new GetContactsResponse(new ErrorMessage(("Log in first")));
         }
 
         UserService userService = new UserServiceImpl();

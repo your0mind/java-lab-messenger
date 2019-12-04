@@ -3,6 +3,7 @@ package com.temp.server.requesthandlers;
 import com.temp.common.models.ChatMessage;
 import com.temp.common.models.Contact;
 import com.temp.common.requests.GetDialogMessagesRequest;
+import com.temp.common.responses.ErrorMessage;
 import com.temp.common.responses.GetDialogMessagesResponse;
 import com.temp.common.responses.Response;
 import com.temp.model.models.Dialog;
@@ -29,21 +30,22 @@ public class GetDialogMessagesRequestHandler implements RequestHandler<GetDialog
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new GetDialogMessagesResponse("Log in first");
+            return new GetDialogMessagesResponse(new ErrorMessage("Log in first"));
         }
 
         UserService userService = new UserServiceImpl();
         User user = userService.findUser(request.getParams().getDialogContact().getUsername());
 
         if (user == null) {
-            return new GetDialogMessagesResponse("Unknown contact");
+            return new GetDialogMessagesResponse(new ErrorMessage("Unknown contact"));
         }
 
         DialogService dialogService = new DialogServiceImpl();
         Dialog dialog = dialogService.findDialog(requester, user);
 
         if (dialog == null) {
-            return new GetDialogMessagesResponse("You have no dialog with that contact");
+            ErrorMessage errorMessage = new ErrorMessage("You have no dialog with that contact");
+            return new GetDialogMessagesResponse(errorMessage);
         }
 
         DialogMessageService dialogMessageService = new DialogMessageServiceImpl();

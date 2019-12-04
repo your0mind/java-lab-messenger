@@ -11,8 +11,8 @@ public class GetDialogMessagesResponse extends Response {
         return messages;
     }
 
-    public GetDialogMessagesResponse(String errorMessage) {
-        super(errorMessage);
+    public GetDialogMessagesResponse(ErrorMessage error) {
+        super(error);
     }
 
     public GetDialogMessagesResponse(List<ChatMessage> messages) {

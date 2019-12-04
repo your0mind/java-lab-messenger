@@ -1,6 +1,7 @@
 package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.GetConferencesRequest;
+import com.temp.common.responses.ErrorMessage;
 import com.temp.common.responses.GetConferencesResponse;
 import com.temp.common.responses.Response;
 import com.temp.model.models.*;
@@ -15,12 +16,13 @@ import java.util.stream.Collectors;
 
 public class GetConferencesRequestHandler implements RequestHandler<GetConferencesRequest> {
     @Override
-    public Response handle(GetConferencesRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
+    public Response handle(GetConferencesRequest request, ServerThread callerThread,
+                           LinkedList<ServerThread> threads) {
         UserSessionInfo userSessionInfo = callerThread.getUserSessionInfo();
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new GetConferencesResponse("Log in first");
+            return new GetConferencesResponse(new ErrorMessage(("Log in first")));
         }
 
         ConferenceParticipantService service = new ConferenceParticipantServiceImpl();

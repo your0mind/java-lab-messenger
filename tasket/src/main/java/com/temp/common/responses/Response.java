@@ -4,24 +4,20 @@ package com.temp.common.responses;
 import com.temp.common.Message;
 
 public abstract class Response implements Message {
-    private String errorMessage = null;
+    private ErrorMessage error = null;
 
     public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+        return error.getMessage();
     }
 
     public boolean hasError() {
-        return errorMessage != null;
+        return error != null;
     }
 
     public Response() {
     }
 
-    public Response(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public Response(ErrorMessage error) {
+        this.error = error;
     }
 }

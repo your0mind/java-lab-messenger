@@ -4,6 +4,7 @@ import com.temp.model.dao.ConferenceParticipantDao;
 import com.temp.model.models.*;
 import com.temp.model.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -18,5 +19,15 @@ public class ConferenceParticipantDaoImpl implements ConferenceParticipantDao {
                 .list();
         session.close();
         return participations;
+    }
+
+    @Override
+    public int save(ConferenceParticipant participant) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        int id = (int) session.save(participant);
+        transaction.commit();
+        session.close();
+        return id;
     }
 }

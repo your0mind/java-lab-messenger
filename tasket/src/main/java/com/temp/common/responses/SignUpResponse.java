@@ -4,7 +4,7 @@ public class SignUpResponse extends Response {
     public SignUpResponse() {
     }
 
-    public SignUpResponse(String errorMessage) {
-        super(errorMessage);
+    public SignUpResponse(ErrorMessage error) {
+        super(error);
     }
 }

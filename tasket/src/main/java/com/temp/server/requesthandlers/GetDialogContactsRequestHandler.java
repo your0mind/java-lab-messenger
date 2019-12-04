@@ -1,6 +1,7 @@
 package com.temp.server.requesthandlers;
 
 import com.temp.common.requests.GetDialogContactsRequest;
+import com.temp.common.responses.ErrorMessage;
 import com.temp.common.responses.GetDialogContactsResponse;
 import com.temp.common.responses.Response;
 import com.temp.common.models.Contact;
@@ -19,12 +20,13 @@ import java.util.List;
 
 public class GetDialogContactsRequestHandler implements RequestHandler<GetDialogContactsRequest> {
     @Override
-    public Response handle(GetDialogContactsRequest request, ServerThread callerThread, LinkedList<ServerThread> threads) {
+    public Response handle(GetDialogContactsRequest request, ServerThread callerThread,
+                           LinkedList<ServerThread> threads) {
         UserSessionInfo userSessionInfo = callerThread.getUserSessionInfo();
         User requester = userSessionInfo.getUser();
 
         if (requester == null) {
-            return new GetDialogContactsResponse("Log in first");
+            return new GetDialogContactsResponse(new ErrorMessage(("Log in first")));
         }
 
         DialogService dialogService = new DialogServiceImpl();
@@ -35,7 +37,9 @@ public class GetDialogContactsRequestHandler implements RequestHandler<GetDialog
 
         // Set requester as user1 in dialog
         for (Dialog dialog: dialogs) {
-            int userId = (dialog.getUser1Id() == requester.getId()) ? dialog.getUser2Id() : dialog.getUser1Id();
+            int userId = (dialog.getUser1Id() == requester.getId())
+                    ? dialog.getUser2Id()
+                    : dialog.getUser1Id();
             contacts.add(new Contact(userService.findUser(userId).getUsername()));
         }
 

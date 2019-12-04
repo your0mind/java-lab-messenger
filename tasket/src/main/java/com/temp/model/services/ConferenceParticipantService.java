@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ConferenceParticipantService {
     List<ConferenceParticipant> findAllParticipationByUser(User user);
+    int saveParticipant(ConferenceParticipant participant);
 }
