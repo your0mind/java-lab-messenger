@@ -14,12 +14,11 @@ public class SignInResponseHandler implements MessageHandler<SignInResponse> {
         signInForm.setEnabled(true);
 
         if (response.hasError()) {
-            JOptionPane.showMessageDialog(signInForm,
-                    response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            String message = response.getErrorMessage();
+            JOptionPane.showMessageDialog(signInForm, message, null, JOptionPane.ERROR_MESSAGE);
+        } else {
+            MainForm.getInstance(client).setVisible(true);
+            signInForm.dispose();
         }
-
-        MainForm.getInstance(client).setVisible(true);
-        signInForm.dispose();
     }
 }

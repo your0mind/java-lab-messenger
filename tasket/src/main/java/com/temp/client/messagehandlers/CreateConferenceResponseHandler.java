@@ -2,22 +2,21 @@ package com.temp.client.messagehandlers;
 
 import com.temp.client.Client;
 import com.temp.client.forms.MainForm;
-import com.temp.common.models.Contact;
-import com.temp.common.responses.CreateDialogResponse;
+import com.temp.common.responses.CreateConferenceResponse;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class CreateDialogResponseHandler implements MessageHandler<CreateDialogResponse> {
+public class CreateConferenceResponseHandler implements MessageHandler<CreateConferenceResponse> {
     @Override
-    public void handle(CreateDialogResponse response, Client client) {
+    public void handle(CreateConferenceResponse response, Client client) {
         if (response.hasError()) {
             Component parent = MainForm.getInstance(client);
             String message = response.getErrorMessage();
             JOptionPane.showMessageDialog(parent, message, null, JOptionPane.ERROR_MESSAGE);
         } else {
-            Contact contact = response.getDialogContact();
-            client.getDefaultListModels().getDialogContactsListModel().addElement(contact);
+            String conferenceName = response.getConferenceName();
+            client.getDefaultListModels().getConferencesListModel().addElement(conferenceName);
         }
     }
 }

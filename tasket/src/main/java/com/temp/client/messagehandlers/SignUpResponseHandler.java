@@ -13,11 +13,10 @@ public class SignUpResponseHandler implements MessageHandler<SignUpResponse> {
         signInForm.setEnabled(true);
 
         if (response.hasError()) {
-            JOptionPane.showMessageDialog(signInForm,
-                    response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            String message = response.getErrorMessage();
+            JOptionPane.showMessageDialog(signInForm, message, null, JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(signInForm, "Successful registration");
         }
-
-        JOptionPane.showMessageDialog(signInForm, "Successful registration");
     }
 }

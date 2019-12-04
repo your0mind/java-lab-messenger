@@ -28,12 +28,8 @@
         </constraints>
         <properties>
           <background color="-986896"/>
-          <model>
-            <item value="dialog1"/>
-            <item value="dialog2"/>
-            <item value="dialog3"/>
-            <item value="dialog4"/>
-          </model>
+          <model/>
+          <selectionMode value="0"/>
         </properties>
       </component>
       <component id="bdf0e" class="javax.swing.JButton" binding="createDialogButton" default-binding="true">

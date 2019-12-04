@@ -55,8 +55,8 @@ public class MainForm extends JFrame {
         createDialogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CreateDialogForm createDialogForm = new CreateDialogForm(client, MainForm.this);
-                createDialogForm.setVisible(true);
+                CreateDialogForm form = new CreateDialogForm(client, MainForm.this);
+                form.setVisible(true);
             }
         });
 
@@ -102,6 +102,14 @@ public class MainForm extends JFrame {
                     JOptionPane.showMessageDialog(MainForm.this, ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+
+        createConferenceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CreateConferenceForm form = new CreateConferenceForm(client, MainForm.this);
+                form.setVisible(true);
             }
         });
 

@@ -6,19 +6,19 @@ import com.temp.common.responses.GetContactsResponse;
 import com.temp.common.models.Contact;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GetContactsResponseHandler implements MessageHandler<GetContactsResponse> {
     @Override
     public void handle(GetContactsResponse response, Client client) {
         if (response.hasError()) {
-            JOptionPane.showMessageDialog(MainForm.getInstance(client),
-                    response.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            Component parent = MainForm.getInstance(client);
+            String message = response.getErrorMessage();
+            JOptionPane.showMessageDialog(parent, message, null, JOptionPane.ERROR_MESSAGE);
+        } else {
+            DefaultListModel<Contact> model = client.getDefaultListModels().getContactsListModel();
+            model.clear();
+            model.addAll(response.getContacts());
         }
-
-        DefaultListModel<Contact> model = client.getDefaultListModels().getContactsListModel();
-
-        model.clear();
-        model.addAll(response.getContacts());
     }
 }
