@@ -26,16 +26,17 @@ public class CreateConferenceForm extends JDialog {
     public CreateConferenceForm(Client client, JFrame owner) {
         super(owner, true);
 
-        client.getDefaultListModels().getContactsListModel().clear();
-        contactsList.setModel(client.getDefaultListModels().getContactsListModel());
+        GetContactsRequestParams params = new GetContactsRequestParams();
 
         try {
-            GetContactsRequestParams params = new GetContactsRequestParams();
             client.getClientThread().sendRequestToServer(new GetContactsRequest(params));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(CreateConferenceForm.this,
                     e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
         }
+
+        client.getDefaultListModels().getContactsListModel().clear();
+        contactsList.setModel(client.getDefaultListModels().getContactsListModel());
 
         contactsList.addListSelectionListener(new ListSelectionListener() {
             @Override

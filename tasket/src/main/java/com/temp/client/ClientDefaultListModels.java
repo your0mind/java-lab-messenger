@@ -8,6 +8,7 @@ import javax.swing.*;
 public class ClientDefaultListModels {
     private DefaultListModel<Contact> dialogContactsListModel;
     private DefaultListModel<Contact> contactsListModel;
+    private DefaultListModel<Contact> confParticipantsListModel;
     private DefaultListModel<ChatMessage> dialogMessagesListModel;
     private DefaultListModel<String> conferencesListModel;
 
@@ -17,6 +18,10 @@ public class ClientDefaultListModels {
 
     public DefaultListModel<Contact> getContactsListModel() {
         return contactsListModel;
+    }
+
+    public DefaultListModel<Contact> getConfParticipantsListModel() {
+        return confParticipantsListModel;
     }
 
     public DefaultListModel<ChatMessage> getDialogMessagesListModel() {
@@ -30,6 +35,7 @@ public class ClientDefaultListModels {
     public ClientDefaultListModels() {
         dialogContactsListModel = new DefaultListModel<>();
         contactsListModel = new DefaultListModel<>();
+        confParticipantsListModel = new DefaultListModel<>();
         dialogMessagesListModel = new DefaultListModel<>();
         conferencesListModel = new DefaultListModel<>();
     }
