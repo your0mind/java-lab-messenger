@@ -7,6 +7,7 @@ import com.temp.common.responses.Response;
 import com.temp.model.models.*;
 import com.temp.model.services.*;
 import com.temp.model.services.impl.ConferenceParticipantServiceImpl;
+import com.temp.model.services.impl.ConferenceServiceImpl;
 import com.temp.server.ServerThread;
 import com.temp.server.UserSessionInfo;
 
@@ -26,10 +27,12 @@ public class GetConferencesRequestHandler implements RequestHandler<GetConferenc
         }
 
         ConferenceParticipantService service = new ConferenceParticipantServiceImpl();
-        List<ConferenceParticipant> participations = service.findAllParticipationByUser(requester);
+        List<ConferenceParticipant> participants = service.findAllParticipationByUser(requester);
 
-        List<String> conferenceNames = participations.stream()
-                .map(p -> p.getConference().getName())
+        ConferenceService conferenceService = new ConferenceServiceImpl();
+
+        List<String> conferenceNames = participants.stream()
+                .map(p -> conferenceService.findConference(p.getConferenceId()).getName())
                 .collect(Collectors.toList());
 
         boolean listenUpdates = request.getParams().isListenUpdates();

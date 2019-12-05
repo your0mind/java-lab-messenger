@@ -9,6 +9,11 @@ public class ConferenceServiceImpl implements ConferenceService {
     ConferenceDao conferenceDao = new ConferenceDaoImpl();
 
     @Override
+    public Conference findConference(int id) {
+        return conferenceDao.find(id);
+    }
+
+    @Override
     public int saveConference(Conference conference) {
         return conferenceDao.save(conference);
     }

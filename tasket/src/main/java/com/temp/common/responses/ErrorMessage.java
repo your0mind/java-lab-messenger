@@ -1,6 +1,8 @@
 package com.temp.common.responses;
 
-public class ErrorMessage {
+import java.io.Serializable;
+
+public class ErrorMessage implements Serializable {
     private String message;
 
     public String getMessage() {

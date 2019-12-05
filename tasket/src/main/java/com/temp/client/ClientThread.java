@@ -1,5 +1,6 @@
 package com.temp.client;
 
+import com.temp.client.exceptions.UnknownMessageException;
 import com.temp.client.forms.SignInForm;
 import com.temp.client.messagehandlers.MessageHandler;
 import com.temp.client.messagehandlers.MessageHandlerBuilder;
@@ -36,8 +37,12 @@ public class ClientThread extends Thread implements Closeable {
                 client.handleMessage(handler, msg);
             }
 
+        } catch (UnknownMessageException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Unknown message from server", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

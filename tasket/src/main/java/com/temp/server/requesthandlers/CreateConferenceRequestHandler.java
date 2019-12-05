@@ -60,6 +60,7 @@ public class CreateConferenceRequestHandler implements RequestHandler<CreateConf
         int id = conferenceService.saveConference(new Conference(params.getName()));
 
         ConferenceParticipantService service = new ConferenceParticipantServiceImpl();
+        service.saveParticipant(new ConferenceParticipant(id, requester.getId()));
         users.forEach(u -> service.saveParticipant(new ConferenceParticipant(id, u.getId())));
 
         for (ServerThread thread : threads) {

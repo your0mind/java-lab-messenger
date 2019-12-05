@@ -8,6 +8,14 @@ import org.hibernate.Transaction;
 
 public class ConferenceDaoImpl implements ConferenceDao {
     @Override
+    public Conference find(int id) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Conference conference = session.get(Conference.class, id);
+        session.close();
+        return conference;
+    }
+
+    @Override
     public int save(Conference conference) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();

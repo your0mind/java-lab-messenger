@@ -8,11 +8,7 @@ import java.io.Serializable;
 public class ConferenceParticipant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "conference_id")
-    private Conference conference;
+    protected int id;;
 
     @Column(name = "conference_id")
     private int conferenceId;
@@ -20,8 +16,11 @@ public class ConferenceParticipant implements Serializable {
     @Column(name = "user_id")
     private int participantId;
 
-    public Conference getConference() {
-        return conference;
+    public int getConferenceId() {
+        return conferenceId;
+    }
+
+    public ConferenceParticipant() {
     }
 
     public ConferenceParticipant(int conferenceId, int participantId) {

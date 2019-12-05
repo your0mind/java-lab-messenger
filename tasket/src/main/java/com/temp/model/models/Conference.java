@@ -17,6 +17,9 @@ public class Conference implements Serializable {
         return name;
     }
 
+    public Conference() {
+    }
+
     public Conference(String name) {
         this.name = name;
     }

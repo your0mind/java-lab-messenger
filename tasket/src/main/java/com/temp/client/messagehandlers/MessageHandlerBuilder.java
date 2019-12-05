@@ -17,6 +17,8 @@ public class MessageHandlerBuilder {
         else if (message instanceof SendDialogMessageResponse)  return new SendDialogMessageResponseHandler();
         else if (message instanceof DialogMessageUpdate)        return new DialogMessageUpdateHandler();
         else if (message instanceof GetConferencesResponse)     return new GetConferencesResponseHandler();
+        else if (message instanceof CreateConferenceResponse)   return new CreateConferenceResponseHandler();
+        else if (message instanceof ConferenceUpdate)           return new ConferenceUpdateHandler();
         else                                                    throw new UnknownMessageException();
     }
 }

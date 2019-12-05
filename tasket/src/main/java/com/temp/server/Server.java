@@ -2,14 +2,13 @@ package com.temp.server;
 
 import com.temp.common.requests.Request;
 import com.temp.common.responses.Response;
-import com.temp.model.models.ConferenceParticipant;
-import com.temp.model.models.Dialog;
-import com.temp.model.models.DialogMessage;
-import com.temp.model.models.User;
+import com.temp.model.models.*;
 import com.temp.model.services.ConferenceParticipantService;
+import com.temp.model.services.ConferenceService;
 import com.temp.model.services.DialogMessageService;
 import com.temp.model.services.DialogService;
 import com.temp.model.services.impl.ConferenceParticipantServiceImpl;
+import com.temp.model.services.impl.ConferenceServiceImpl;
 import com.temp.model.services.impl.DialogMessageServiceImpl;
 import com.temp.model.services.impl.DialogServiceImpl;
 import com.temp.server.requesthandlers.RequestHandler;

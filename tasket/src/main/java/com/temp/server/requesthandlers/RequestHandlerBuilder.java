@@ -13,6 +13,7 @@ public class RequestHandlerBuilder {
         else if (request instanceof GetDialogMessagesRequest)   return new GetDialogMessagesRequestHandler();
         else if (request instanceof SendDialogMessageRequest)   return new SendDialogMessageRequestHandler();
         else if (request instanceof GetConferencesRequest)      return new GetConferencesRequestHandler();
+        else if (request instanceof CreateConferenceRequest)    return new CreateConferenceRequestHandler();
         else                                                    throw new UnknownRequestException();
     }
 }
