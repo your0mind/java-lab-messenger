@@ -5,6 +5,6 @@ import com.temp.model.models.*;
 import java.util.List;
 
 public interface ConferenceParticipantDao {
-    List<ConferenceParticipant> findAllByUser(User user);
+    List<ConferenceParticipant> findAll(Conference conference);
     int save(ConferenceParticipant participant);
 }

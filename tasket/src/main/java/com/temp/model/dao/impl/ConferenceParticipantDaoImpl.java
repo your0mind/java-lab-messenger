@@ -9,16 +9,17 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class ConferenceParticipantDaoImpl implements ConferenceParticipantDao {
+
     @Override
-    public List<ConferenceParticipant> findAllByUser(User user) {
+    public List<ConferenceParticipant> findAll(Conference conference) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         @SuppressWarnings("unchecked")
-        List<ConferenceParticipant> participations = (List<ConferenceParticipant>) session
-                .createQuery("from ConferenceParticipant where user_id = :userId")
-                .setParameter("userId", user.getId())
+        List<ConferenceParticipant> participants = (List<ConferenceParticipant>) session
+                .createQuery("from ConferenceParticipant where conference_id = :conferenceId")
+                .setParameter("conferenceId", conference.getId())
                 .list();
         session.close();
-        return participations;
+        return participants;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.temp.model.services.impl;
 
 import com.temp.model.dao.ConferenceParticipantDao;
 import com.temp.model.dao.impl.ConferenceParticipantDaoImpl;
+import com.temp.model.models.Conference;
 import com.temp.model.models.ConferenceParticipant;
 import com.temp.model.models.User;
 import com.temp.model.services.ConferenceParticipantService;
@@ -12,8 +13,8 @@ public class ConferenceParticipantServiceImpl implements ConferenceParticipantSe
     private ConferenceParticipantDao dao = new ConferenceParticipantDaoImpl();
 
     @Override
-    public List<ConferenceParticipant> findAllParticipationByUser(User user) {
-        return dao.findAllByUser(user);
+    public List<ConferenceParticipant> findAllParticipants(Conference conference) {
+        return dao.findAll(conference);
     }
 
     @Override

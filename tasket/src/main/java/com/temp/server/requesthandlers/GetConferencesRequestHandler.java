@@ -4,9 +4,9 @@ import com.temp.common.requests.GetConferencesRequest;
 import com.temp.common.responses.ErrorMessage;
 import com.temp.common.responses.GetConferencesResponse;
 import com.temp.common.responses.Response;
-import com.temp.model.models.*;
-import com.temp.model.services.*;
-import com.temp.model.services.impl.ConferenceParticipantServiceImpl;
+import com.temp.model.models.Conference;
+import com.temp.model.models.User;
+import com.temp.model.services.ConferenceService;
 import com.temp.model.services.impl.ConferenceServiceImpl;
 import com.temp.server.ServerThread;
 import com.temp.server.UserSessionInfo;
@@ -26,15 +26,13 @@ public class GetConferencesRequestHandler implements RequestHandler<GetConferenc
             return new GetConferencesResponse(new ErrorMessage(("Log in first")));
         }
 
-        ConferenceParticipantService service = new ConferenceParticipantServiceImpl();
-        List<ConferenceParticipant> participants = service.findAllParticipationByUser(requester);
-
-        ConferenceService conferenceService = new ConferenceServiceImpl();
-
-        List<String> conferenceNames = participants.stream()
-                .map(p -> conferenceService.findConference(p.getConferenceId()).getName())
+        ConferenceService service = new ConferenceServiceImpl();
+        List<String> conferenceNames = service.findAllConferencesByUser(requester)
+                .stream()
+                .map(Conference::getName)
                 .collect(Collectors.toList());
 
+        ConferenceService conferenceService = new ConferenceServiceImpl();
         boolean listenUpdates = request.getParams().isListenUpdates();
         userSessionInfo.setListenConferencesUpdates(listenUpdates);
 

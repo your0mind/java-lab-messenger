@@ -38,6 +38,14 @@ public class CreateConferenceRequestHandler implements RequestHandler<CreateConf
 
         CreateConferenceRequestParams params = request.getParams();
 
+        ConferenceService conferenceService = new ConferenceServiceImpl();
+        Conference conference = conferenceService.findConference(params.getName());
+
+        if (conference != null) {
+            ErrorMessage error = new ErrorMessage("Conference with this name is already exists");
+            return new CreateConferenceResponse(error);
+        }
+
         List<Contact> participants = params.getParticipants();
         List<User> users = new ArrayList<>(participants.size());
 
@@ -56,7 +64,6 @@ public class CreateConferenceRequestHandler implements RequestHandler<CreateConf
             }
         }
 
-        ConferenceService conferenceService = new ConferenceServiceImpl();
         int id = conferenceService.saveConference(new Conference(params.getName()));
 
         ConferenceParticipantService service = new ConferenceParticipantServiceImpl();

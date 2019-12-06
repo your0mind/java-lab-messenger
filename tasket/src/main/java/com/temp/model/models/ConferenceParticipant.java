@@ -20,6 +20,10 @@ public class ConferenceParticipant implements Serializable {
         return conferenceId;
     }
 
+    public int getParticipantId() {
+        return participantId;
+    }
+
     public ConferenceParticipant() {
     }
 
