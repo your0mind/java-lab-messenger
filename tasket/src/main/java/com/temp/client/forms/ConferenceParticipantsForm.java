@@ -22,12 +22,12 @@ public class ConferenceParticipantsForm extends JDialog {
     public ConferenceParticipantsForm(Client client, JFrame owner, String conferenceName) {
         super(owner, true);
 
-        GetConfParticipantsRequest request1 = new GetConfParticipantsRequest(
-                new GetConfParticipantsRequestParams(conferenceName));
+//        GetConfParticipantsRequest request1 = new GetConfParticipantsRequest(
+//                new GetConfParticipantsRequestParams(conferenceName));
         GetContactsRequest request2 = new GetContactsRequest(new GetContactsRequestParams());
 
         try {
-            client.getClientThread().sendRequestToServer(request1);
+//            client.getClientThread().sendRequestToServer(request1);
             client.getClientThread().sendRequestToServer(request2);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(ConferenceParticipantsForm.this,
